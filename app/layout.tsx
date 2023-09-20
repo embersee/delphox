@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import NextAuthProvider from "@/lib/auth/Provider";
 import TrpcProvider from "@/lib/trpc/Provider";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/utils/ThemeProvider";
+import { TailwindIndicator } from "@/components/utils/TailwindIndicator";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +24,11 @@ export default function RootLayout({
       <body className={inter.className}>
         <NextAuthProvider>
           <TrpcProvider>
-            {children}
-            <Toaster />
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              {children}
+              <Toaster />
+              <TailwindIndicator />
+            </ThemeProvider>
           </TrpcProvider>
         </NextAuthProvider>
       </body>
