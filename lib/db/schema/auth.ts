@@ -11,7 +11,7 @@ import { relations } from "drizzle-orm";
 import { bots } from "./bots";
 
 export const users = mysqlTable("user", {
-  id: serial("id").primaryKey(),
+  id: varchar("id", { length: 255 }).notNull().primaryKey(),
   telegram_id: varchar("telegram_id", { length: 255 }).notNull(),
   displayName: varchar("display_name", { length: 256 }),
   name: varchar("name", { length: 255 }),

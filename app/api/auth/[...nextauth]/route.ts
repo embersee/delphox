@@ -14,6 +14,7 @@ declare module "next-auth" {
       telegram_id: string;
       first_name: string;
       last_name: string;
+      registered?: boolean;
     };
   }
 }
@@ -35,7 +36,7 @@ export const authOptions: NextAuthOptions = {
 
         if (!user) return null;
 
-        const newUser: NewUser = {
+        const newUser = {
           id: user.id.toString(),
           telegram_id: user.id.toString(),
           name: user.username || "",
@@ -45,7 +46,7 @@ export const authOptions: NextAuthOptions = {
         };
 
         const exists = await db.query.users.findFirst({
-          where: eq(users.telegram_id, newUser.id),
+          where: eq(users.telegram_id, newUser.telegram_id),
         });
 
         if (exists) return newUser;
@@ -61,7 +62,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     session: ({ session, token }) => {
       if (session?.user) {
-        session.user.id = token.sub as string;
+        session.user.id = token.sub!;
       }
       return session;
     },
