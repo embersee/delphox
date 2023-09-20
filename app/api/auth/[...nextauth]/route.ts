@@ -1,27 +1,24 @@
 import { db } from "@/lib/db";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { DefaultSession, NextAuthOptions } from "next-auth";
+import { DefaultSession, NextAuthOptions, Session, User } from "next-auth";
 import NextAuth from "next-auth/next";
 import { env } from "@/lib/env.mjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { AuthDataValidator, objectToAuthDataMap } from "@telegram-auth/server";
+import { NewUser, users } from "@/lib/db/schema/auth";
+import { eq } from "drizzle-orm";
 
 declare module "next-auth" {
-  interface Session extends DefaultSession {
-    user: {
+  interface Session {
+    user: DefaultSession["user"] & {
       id: string;
-    } & DefaultSession["user"];
+      telegram_id: string;
+      first_name: string;
+      last_name: string;
+    };
   }
 }
 
 export const authOptions: NextAuthOptions = {
-  adapter: DrizzleAdapter(db),
-  callbacks: {
-    session: ({ session, user }) => {
-      session.user.id = user.id;
-      return session;
-    },
-  },
   providers: [
     CredentialsProvider({
       id: "telegram-login",
@@ -38,15 +35,53 @@ export const authOptions: NextAuthOptions = {
 
         if (!user) return null;
 
-        return {
+        const newUser: NewUser = {
           id: user.id.toString(),
-          name: user.username,
-          username: user.username,
-          image: user.photo_url,
+          telegram_id: user.id.toString(),
+          name: user.username || "",
+          first_name: user.first_name || "",
+          last_name: user.last_name || "",
+          image: user.photo_url || "",
         };
+
+        const exists = await db.query.users.findFirst({
+          where: eq(users.telegram_id, newUser.id),
+        });
+
+        if (exists) return newUser;
+
+        const createNewUser = await db.insert(users).values(newUser);
+
+        if (createNewUser.insertId) return newUser;
+
+        return null;
       },
     }),
   ],
+  callbacks: {
+    session: ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.sub as string;
+      }
+      return session;
+    },
+    jwt: ({ user, token }) => {
+      if (user) {
+        token.uid = user.id;
+      }
+      return token;
+    },
+  },
+  session: {
+    strategy: "jwt",
+  },
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET, //'supersecret' // also in vercel env variables
+    maxAge: 15 * 24 * 30 * 60, // 15 days
+  },
+  pages: {
+    error: "/error",
+  },
 };
 
 const handler = NextAuth(authOptions);

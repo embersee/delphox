@@ -11,7 +11,7 @@ export default function SignIn() {
   if (session) {
     return (
       <>
-        Signed in as {session.user?.name} <br />
+        Signed in as {session.user.name} <br />
         <Button variant={"destructive"} onClick={() => signOut()}>
           Sign out
         </Button>

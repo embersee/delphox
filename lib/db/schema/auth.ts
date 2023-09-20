@@ -7,11 +7,16 @@ import {
   text,
 } from "drizzle-orm/mysql-core";
 import type { AdapterAccount } from "@auth/core/adapters";
+import { z } from "zod";
+import { createInsertSchema } from "drizzle-zod";
 
 export const users = mysqlTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  telegram_id: varchar("telegram_id", { length: 255 }).notNull(),
   name: varchar("name", { length: 255 }),
-  email: varchar("email", { length: 255 }).notNull(),
+  first_name: varchar("first_name", { length: 255 }),
+  last_name: varchar("last_name", { length: 255 }),
+  email: varchar("email", { length: 255 }).default(""),
   emailVerified: timestamp("emailVerified", {
     mode: "date",
     fsp: 3,
@@ -19,11 +24,14 @@ export const users = mysqlTable("user", {
   image: varchar("image", { length: 255 }),
 });
 
+export const insertUserSchema = createInsertSchema(users);
+
+export type NewUser = z.infer<typeof insertUserSchema>;
+
 export const accounts = mysqlTable(
   "account",
   {
-    userId: varchar("userId", { length: 255 })
-      .notNull(),
+    userId: varchar("userId", { length: 255 }).notNull(),
     type: varchar("type", { length: 255 })
       .$type<AdapterAccount["type"]>()
       .notNull(),
@@ -44,8 +52,7 @@ export const accounts = mysqlTable(
 
 export const sessions = mysqlTable("session", {
   sessionToken: varchar("sessionToken", { length: 255 }).notNull().primaryKey(),
-  userId: varchar("userId", { length: 255 })
-    .notNull(),
+  userId: varchar("userId", { length: 255 }).notNull(),
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });
 
