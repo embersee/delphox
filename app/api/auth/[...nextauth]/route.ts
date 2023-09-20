@@ -36,10 +36,10 @@ export const authOptions: NextAuthOptions = {
 
         if (!user) return null;
 
-        const newUser = {
+        const newUser: NewUser = {
           id: user.id.toString(),
           telegram_id: user.id.toString(),
-          name: user.username || "",
+          name: user.username,
           first_name: user.first_name || "",
           last_name: user.last_name || "",
           image: user.photo_url || "",
@@ -53,7 +53,11 @@ export const authOptions: NextAuthOptions = {
 
         const createNewUser = await db.insert(users).values(newUser);
 
-        if (createNewUser.insertId) return newUser;
+        if (createNewUser.rowsAffected) {
+          console.log(createNewUser.rowsAffected);
+
+          return newUser;
+        }
 
         return null;
       },

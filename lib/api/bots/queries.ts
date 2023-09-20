@@ -4,9 +4,11 @@ import { getUserAuth } from "@/lib/auth/utils";
 import { type BotId, botIdSchema, bots } from "@/lib/db/schema/bots";
 
 export const getBots = async () => {
-  // const { session } = await getUserAuth();
-  const b = await db.select().from(bots);
-  // .where(eq(bots.userId, session?.user.id!));
+  const { session } = await getUserAuth();
+  const b = await db
+    .select()
+    .from(bots)
+    .where(eq(bots.userId, session?.user.id!));
   return { bots: b };
 };
 
