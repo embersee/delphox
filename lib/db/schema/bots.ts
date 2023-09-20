@@ -1,38 +1,32 @@
-import {
-  varchar,
-  text,
-  int,
-  serial,
-  mysqlTable,
-  uniqueIndex,
-} from "drizzle-orm/mysql-core";
+import { varchar, text, serial, mysqlTable } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
 import { getBots } from "@/lib/api/bots/queries";
+import { relations } from "drizzle-orm";
+import { users } from "./auth";
 
-export const bots = mysqlTable(
-  "bots",
-  {
-    id: serial("id").primaryKey(),
-    username: varchar("username", { length: 256 }).notNull(),
-    botId: varchar("bot_id", { length: 256 }).notNull(),
-    botToken: text("bot_token").notNull(),
-    ownerId: int("owner_id").notNull(),
-    userId: varchar("user_id", { length: 256 }).notNull(),
-  },
-  (bots) => {
-    return {
-      botIdIndex: uniqueIndex("bot_id_idx").on(bots.botId),
-    };
-  }
-);
+export const bots = mysqlTable("bots", {
+  id: serial("id").primaryKey(),
+  username: varchar("username", { length: 256 }).notNull(),
+  displayName: varchar("display_name", { length: 256 }),
+  botToken: varchar("bot_token", { length: 256 }).notNull().unique(),
+  userId: varchar("user_id", { length: 256 }),
+});
+
+//👇 This code block defines which columns in the two tables are related
+export const botsRelations = relations(bots, ({ one }) => ({
+  user: one(users, {
+    fields: [bots.userId],
+    references: [users.telegram_id],
+  }),
+}));
 
 // Schema for bots - used to validate API requests
 export const insertBotSchema = createInsertSchema(bots);
 
 export const insertBotParams = createSelectSchema(bots, {
-  ownerId: z.coerce.number(),
+  id: z.coerce.number(),
 }).omit({
   id: true,
   userId: true,
@@ -41,7 +35,7 @@ export const insertBotParams = createSelectSchema(bots, {
 export const updateBotSchema = createSelectSchema(bots);
 
 export const updateBotParams = createSelectSchema(bots, {
-  ownerId: z.coerce.number(),
+  id: z.coerce.number(),
 }).omit({
   userId: true,
 });

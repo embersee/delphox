@@ -1,18 +1,19 @@
 import {
-  int,
   timestamp,
   mysqlTable,
-  primaryKey,
   varchar,
-  text,
+  boolean,
+  serial,
 } from "drizzle-orm/mysql-core";
-import type { AdapterAccount } from "@auth/core/adapters";
 import { z } from "zod";
 import { createInsertSchema } from "drizzle-zod";
+import { relations } from "drizzle-orm";
+import { bots } from "./bots";
 
 export const users = mysqlTable("user", {
-  id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  id: serial("id").primaryKey(),
   telegram_id: varchar("telegram_id", { length: 255 }).notNull(),
+  displayName: varchar("display_name", { length: 256 }),
   name: varchar("name", { length: 255 }),
   first_name: varchar("first_name", { length: 255 }),
   last_name: varchar("last_name", { length: 255 }),
@@ -22,48 +23,14 @@ export const users = mysqlTable("user", {
     fsp: 3,
   }).defaultNow(),
   image: varchar("image", { length: 255 }),
+  registered: boolean("registered").default(false),
 });
+
+//👇 This code block will tell Drizzle that users & bots are related!
+export const usersRelations = relations(users, ({ many }) => ({
+  bots: many(bots),
+}));
 
 export const insertUserSchema = createInsertSchema(users);
 
 export type NewUser = z.infer<typeof insertUserSchema>;
-
-export const accounts = mysqlTable(
-  "account",
-  {
-    userId: varchar("userId", { length: 255 }).notNull(),
-    type: varchar("type", { length: 255 })
-      .$type<AdapterAccount["type"]>()
-      .notNull(),
-    provider: varchar("provider", { length: 255 }).notNull(),
-    providerAccountId: varchar("providerAccountId", { length: 255 }).notNull(),
-    refresh_token: varchar("refresh_token", { length: 255 }),
-    access_token: varchar("access_token", { length: 255 }),
-    expires_at: int("expires_at"),
-    token_type: varchar("token_type", { length: 255 }),
-    scope: varchar("scope", { length: 255 }),
-    id_token: text("id_token"),
-    session_state: varchar("session_state", { length: 255 }),
-  },
-  (account) => ({
-    compoundKey: primaryKey(account.provider, account.providerAccountId),
-  })
-);
-
-export const sessions = mysqlTable("session", {
-  sessionToken: varchar("sessionToken", { length: 255 }).notNull().primaryKey(),
-  userId: varchar("userId", { length: 255 }).notNull(),
-  expires: timestamp("expires", { mode: "date" }).notNull(),
-});
-
-export const verificationTokens = mysqlTable(
-  "verificationToken",
-  {
-    identifier: varchar("identifier", { length: 255 }).notNull(),
-    token: varchar("token", { length: 255 }).notNull(),
-    expires: timestamp("expires", { mode: "date" }).notNull(),
-  },
-  (vt) => ({
-    compoundKey: primaryKey(vt.identifier, vt.token),
-  })
-);
