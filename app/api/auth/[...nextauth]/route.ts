@@ -2,14 +2,15 @@ import { db } from "@/lib/db";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { DefaultSession, NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
-import { env } from "@/lib/env.mjs"
-import GithubProvider from "next-auth/providers/github";
+import { env } from "@/lib/env.mjs";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { AuthDataValidator, objectToAuthDataMap } from "@telegram-auth/server";
 
 declare module "next-auth" {
-  interface Session {
-    user: DefaultSession["user"] & {
+  interface Session extends DefaultSession {
+    user: {
       id: string;
-    };
+    } & DefaultSession["user"];
   }
 }
 
@@ -22,10 +23,29 @@ export const authOptions: NextAuthOptions = {
     },
   },
   providers: [
-     GithubProvider({
-      clientId: env.GITHUB_CLIENT_ID,
-      clientSecret: env.GITHUB_CLIENT_SECRET,
-    })
+    CredentialsProvider({
+      id: "telegram-login",
+      name: "Telegram Login",
+      credentials: {},
+      async authorize(credentials, req) {
+        const validator = new AuthDataValidator({
+          botToken: `${env.BOT_TOKEN}`,
+        });
+
+        const data = objectToAuthDataMap(req.query || {});
+
+        const user = await validator.validate(data);
+
+        if (!user) return null;
+
+        return {
+          id: user.id.toString(),
+          name: user.username,
+          username: user.username,
+          image: user.photo_url,
+        };
+      },
+    }),
   ],
 };
 
