@@ -6,7 +6,9 @@ export default async function Home() {
     <>
       <Nav />
       <main>
-        <SignIn />
+        <div className="page">
+          <SignIn />
+        </div>
       </main>
     </>
   );

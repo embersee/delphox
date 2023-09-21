@@ -4,6 +4,7 @@ import {
   serial,
   mysqlTable,
   boolean,
+  timestamp,
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -15,10 +16,13 @@ import { users } from "./auth";
 export const bots = mysqlTable("bots", {
   id: serial("id").primaryKey(),
   username: varchar("username", { length: 256 }).notNull(),
-  displayName: varchar("display_name", { length: 256 }).notNull(),
+  displayName: varchar("display_name", { length: 256 }).notNull().default(""),
   botToken: varchar("bot_token", { length: 256 }).notNull().unique(),
   userId: varchar("user_id", { length: 256 }),
   active: boolean("active").default(false),
+  description: text("description").notNull().default(""),
+  shortDescription: text("short_description").notNull().default(""),
+  menuButton: varchar("menu_button", { length: 256 }).notNull().default(""),
 });
 
 //👇 This code block defines which columns in the two tables are related
@@ -40,6 +44,10 @@ export const insertBotParams = createSelectSchema(bots, {
     .min(1)
     .regex(/^[0-9]{8,10}:[a-zA-Z0-9_-]{35}$/),
   displayName: z.string().optional().default(""),
+  description: z.string().max(512).optional().default(""),
+  shortDescription: z.string().max(120).optional().default(""),
+  menuButton: z.string().optional().default(""),
+  active: z.boolean().default(false),
 }).omit({
   id: true,
   userId: true,
@@ -49,6 +57,8 @@ export const updateBotSchema = createSelectSchema(bots);
 
 export const updateBotParams = createSelectSchema(bots, {
   id: z.coerce.number(),
+  menuButton: z.string().optional().default(""),
+  active: z.boolean().default(false),
 }).omit({
   userId: true,
 });

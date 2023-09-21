@@ -21,6 +21,13 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { DeleteBotButton } from "./DeleteBotButton";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
 const BotForm = ({
   bot,
   closeModal,
@@ -44,6 +51,8 @@ const BotForm = ({
       username: "",
       displayName: "",
       botToken: "",
+      description: "",
+      shortDescription: "",
     },
   });
 
@@ -90,7 +99,6 @@ const BotForm = ({
     });
 
   const handleSubmit = (values: NewBotParams) => {
-    console.log("click");
     if (editing) {
       updateBot({ ...values, id: bot.id });
     } else {
@@ -99,7 +107,7 @@ const BotForm = ({
   };
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className={"space-y-4"}>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="displayName"
@@ -162,6 +170,54 @@ const BotForm = ({
             </FormItem>
           )}
         />
+
+        {editing && (
+          <Accordion type="single" collapsible>
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Extra configuration</AccordionTrigger>
+              <AccordionContent>
+                <div className="space-y-4 px-[1px]">
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Description</FormLabel>
+                        <FormControl>
+                          <Input
+                            autoComplete="off"
+                            placeholder="e.g. description"
+                            {...field}
+                          />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="shortDescription"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Short Description</FormLabel>
+                        <FormControl>
+                          <Input
+                            autoComplete="off"
+                            placeholder="e.g. short description"
+                            {...field}
+                          />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        )}
 
         <div className="text-xs text-red-700">
           <p>* required fields</p>

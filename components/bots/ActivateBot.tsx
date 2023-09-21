@@ -84,7 +84,13 @@ export const Activation = ({ bot }: { bot: CompleteBot }) => {
     });
   };
 
-  const { mutate: updateBot, isLoading: isUpdating } =
+  const { mutate: deactivateBot, isLoading: isUpdatingDeact } =
+    trpc.bots.updateBot.useMutation({
+      onSuccess: () => onSuccess("deactivate"),
+      onError: (error) => onError(error.message),
+    });
+
+  const { mutate: activateBot, isLoading: isUpdatingAct } =
     trpc.bots.updateBot.useMutation({
       onSuccess: () => onSuccess("activate"),
       onError: (error) => onError(error.message),
@@ -95,17 +101,17 @@ export const Activation = ({ bot }: { bot: CompleteBot }) => {
       {bot.active ? (
         <ActivateBotButton
           variant="destructive"
-          onClickAction={() => updateBot({ ...bot, active: false })}
+          onClickAction={() => deactivateBot({ ...bot, active: false })}
           desc="This action turns your bot off. Your clients won't be able to see your store/catalog."
         >
-          {`Deactivat${isUpdating ? "ing..." : "e"}`}
+          {`Deactivat${isUpdatingDeact ? "ing..." : "e"}`}
         </ActivateBotButton>
       ) : (
         <ActivateBotButton
-          onClickAction={() => updateBot({ ...bot, active: true })}
+          onClickAction={() => activateBot({ ...bot, active: true })}
           desc="This action will turn your bot on. Your clients will be able to view your store."
         >
-          {`Activat${isUpdating ? "ing..." : "e"}`}
+          {`Activat${isUpdatingAct ? "ing..." : "e"}`}
         </ActivateBotButton>
       )}
     </div>

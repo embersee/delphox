@@ -4,7 +4,7 @@ import { trpc } from "@/lib/trpc/client";
 import BotModal from "./BotModal";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { Activation } from "./ActivateBot";
+import { Badge } from "../ui/badge";
 
 export default function BotList({ bots }: { bots: CompleteBot[] }) {
   const { data: b } = trpc.bots.getBots.useQuery(undefined, {
@@ -29,21 +29,25 @@ const Bot = ({ bot }: { bot: CompleteBot }) => {
   return (
     <li className="flex justify-between items-center p-2 rounded-md bg-secondary/30">
       <div className="w-full flex items-center space-x-4">
-        <Button variant="secondary">{bot.displayName}</Button>
-
         <Link
           href={`https://t.me/${bot.username.substring(1)}`}
           className="flex text-sm"
           target="_blank"
         >
-          {bot.username} 🔗
+          <Button variant="secondary">{bot.displayName}</Button>{" "}
         </Link>
-        <Button variant="secondary">
-          Status: {bot.active ? "active" : "inactive"}
-        </Button>
+
+        {bot.active ? (
+          <Badge variant="outline" className=" border-green-300">
+            Active
+          </Badge>
+        ) : (
+          <Badge variant="outline" className=" border-orange-300">
+            Inactive
+          </Badge>
+        )}
       </div>
       <div className="flex space-x-2">
-        <Activation bot={bot} />
         <BotModal bot={bot} />
       </div>
     </li>

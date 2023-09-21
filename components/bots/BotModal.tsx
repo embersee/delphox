@@ -13,6 +13,8 @@ import {
 import BotForm from "./BotForm";
 import { Bot } from "@/lib/db/schema/bots";
 import Link from "next/link";
+import { Activation } from "./ActivateBot";
+import { Badge } from "../ui/badge";
 
 export default function BotModal({
   bot,
@@ -57,7 +59,21 @@ export default function BotModal({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="px-5 pt-5">
-          <DialogTitle>{editing ? "Edit" : "Create"} Bot</DialogTitle>
+          <DialogTitle className="flex justify-between items-center">
+            {editing ? "Edit" : "Create"} Bot
+            <div className="flex items-center gap-2">
+              {bot?.active ? (
+                <Badge variant="outline" className=" h-8 border-green-300">
+                  Bot: Active
+                </Badge>
+              ) : (
+                <Badge variant="outline" className=" h-8 border-orange-300">
+                  Bot: Inactive
+                </Badge>
+              )}
+              {bot ? <Activation bot={bot} /> : null}
+            </div>
+          </DialogTitle>
           <DialogDescription>
             Please get the required information about your bot from{" "}
             <Link href="https://t.me/BotFather" target="_blank">
