@@ -1,5 +1,5 @@
 import { getBotById, getBots } from "@/lib/api/bots/queries";
-import { publicProcedure, router } from "../trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 import {
   botIdSchema,
   insertBotParams,
@@ -14,19 +14,19 @@ export const botsRouter = router({
   getBotById: publicProcedure.input(botIdSchema).query(async ({ input }) => {
     return getBotById(input.id);
   }),
-  createBot: publicProcedure
+  createBot: protectedProcedure
     .input(insertBotParams)
-    .mutation(async ({ input }) => {
-      return createBot(input);
+    .mutation(async ({ input, ctx }) => {
+      return createBot(input, ctx.user);
     }),
-  updateBot: publicProcedure
+  updateBot: protectedProcedure
     .input(updateBotParams)
-    .mutation(async ({ input }) => {
-      return updateBot(input.id, input);
+    .mutation(async ({ input, ctx }) => {
+      return updateBot(input.id, input, ctx.user);
     }),
-  deleteBot: publicProcedure
+  deleteBot: protectedProcedure
     .input(botIdSchema)
-    .mutation(async ({ input }) => {
-      return deleteBot(input.id);
+    .mutation(async ({ input, ctx }) => {
+      return deleteBot(input.id, ctx.user);
     }),
 });

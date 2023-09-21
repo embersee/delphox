@@ -1,7 +1,11 @@
+import BotList from "@/components/bots/BotList";
+import { getBots } from "@/lib/api/bots/queries";
+
 export default async function Dash() {
+  const { bots } = await getBots();
   return (
-    <div>
-      <h1>Dash</h1>
-    </div>
+    <>
+      <BotList bots={bots} />
+    </>
   );
 }

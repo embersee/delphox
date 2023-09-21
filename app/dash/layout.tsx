@@ -1,5 +1,6 @@
 import DashNav from "@/components/layouts/DashNav";
 import { getUser } from "@/lib/api/auth/queries";
+import { checkAuth } from "@/lib/auth/utils";
 import { redirect } from "next/navigation";
 
 export default async function DashLayout({
@@ -7,18 +8,12 @@ export default async function DashLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = await getUser();
-
-  if (!user) return redirect("/");
-
-  if (!user.registered) {
-    redirect("/registration");
-  }
+  checkAuth();
 
   return (
     <>
       <DashNav />
-      {children}
+      <main>{children}</main>
     </>
   );
 }

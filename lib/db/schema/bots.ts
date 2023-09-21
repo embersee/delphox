@@ -9,7 +9,7 @@ import { users } from "./auth";
 export const bots = mysqlTable("bots", {
   id: serial("id").primaryKey(),
   username: varchar("username", { length: 256 }).notNull(),
-  displayName: varchar("display_name", { length: 256 }),
+  displayName: varchar("display_name", { length: 256 }).notNull(),
   botToken: varchar("bot_token", { length: 256 }).notNull().unique(),
   userId: varchar("user_id", { length: 256 }),
 });
@@ -27,6 +27,15 @@ export const insertBotSchema = createInsertSchema(bots);
 
 export const insertBotParams = createSelectSchema(bots, {
   id: z.coerce.number(),
+  username: z.string().min(1).includes("@"),
+  botToken: z
+    .string()
+    .min(1)
+    .regex(/^[0-9]{8,10}:[a-zA-Z0-9_-]{35}$/)
+    .describe(
+      "It should look like: {8-10 numbers}:{ Long string of gibberish letters}"
+    ),
+  displayName: z.string().optional().default(""),
 }).omit({
   id: true,
   userId: true,

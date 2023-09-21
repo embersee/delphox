@@ -6,7 +6,7 @@ import {
   serial,
 } from "drizzle-orm/mysql-core";
 import { z } from "zod";
-import { createInsertSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { relations } from "drizzle-orm";
 import { bots } from "./bots";
 
@@ -32,5 +32,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 }));
 
 export const insertUserSchema = createInsertSchema(users);
+export const selectUserSchema = createSelectSchema(users);
 
 export type NewUser = z.infer<typeof insertUserSchema>;
+export type User = z.infer<typeof selectUserSchema>;

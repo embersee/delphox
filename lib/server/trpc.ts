@@ -23,9 +23,23 @@ const t = initTRPC.context<Context>().create({
     };
   },
 });
+
+const isAuthed = t.middleware((opts) => {
+  const { ctx } = opts;
+  if (!ctx.session?.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return opts.next({
+    ctx: {
+      user: ctx.session.user,
+    },
+  });
+});
+
 /**
  * Export reusable router and procedure helpers
  * that can be used throughout the router
  */
 export const router = t.router;
 export const publicProcedure = t.procedure;
+export const protectedProcedure = t.procedure.use(isAuthed);

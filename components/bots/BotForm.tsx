@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,14 +19,14 @@ import { Button } from "../ui/button";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import { TRPCClientError } from "@trpc/client";
+import { DeleteBotButton } from "./DeleteBotButton";
 
 const BotForm = ({
   bot,
-  closeModal,
-}: {
+}: // closeModal,
+{
   bot?: Bot;
-  closeModal: () => void;
+  // closeModal?: () => void;
 }) => {
   const { toast } = useToast();
 
@@ -41,27 +42,28 @@ const BotForm = ({
     resolver: zodResolver(insertBotParams),
     defaultValues: bot ?? {
       username: "",
-      botId: "",
+      displayName: "",
       botToken: "",
-      ownerId: 0,
     },
   });
 
   const onSuccess = (action: "create" | "update" | "delete") => {
     utils.bots.getBots.invalidate();
     router.refresh();
-    closeModal();
+    // closeModal();
     toast({
-      title: "Success",
+      title: "Success 👏",
       description: `Bot ${action}d!`,
       variant: "default",
     });
+
+    router.push("/dash");
   };
 
   const onError = (msg: string) => {
     utils.bots.getBots.invalidate();
     router.refresh();
-    closeModal();
+    // closeModal();
     toast({
       title: "Error",
       description: msg,
@@ -78,14 +80,17 @@ const BotForm = ({
   const { mutate: updateBot, isLoading: isUpdating } =
     trpc.bots.updateBot.useMutation({
       onSuccess: () => onSuccess("update"),
+      onError: (error) => onError(error.message),
     });
 
   const { mutate: deleteBot, isLoading: isDeleting } =
     trpc.bots.deleteBot.useMutation({
       onSuccess: () => onSuccess("delete"),
+      onError: (error) => onError(error.message),
     });
 
   const handleSubmit = (values: NewBotParams) => {
+    console.log("click");
     if (editing) {
       updateBot({ ...values, id: bot.id });
     } else {
@@ -94,35 +99,46 @@ const BotForm = ({
   };
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className={"space-y-8"}>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className={"space-y-4"}>
+        <FormField
+          control={form.control}
+          name="displayName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Choose display name!</FormLabel>
+              <FormControl>
+                <Input
+                  autoComplete="off"
+                  placeholder="e.g. My Store..."
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                You can change this at any time.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Bot Username</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  autoComplete="off"
+                  placeholder="e.g. @username_bot"
+                />
               </FormControl>
 
               <FormMessage />
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="botId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bot Id</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="botToken"
@@ -130,27 +146,19 @@ const BotForm = ({
             <FormItem>
               <FormLabel>Bot Token</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  type="password"
+                  autoComplete="off"
+                  placeholder="e.g. ***"
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="ownerId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Owner Id</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <Button
           type="submit"
           className="mr-1"
@@ -161,13 +169,9 @@ const BotForm = ({
             : `Creat${isCreating ? "ing..." : "e"}`}
         </Button>
         {editing ? (
-          <Button
-            type="button"
-            variant={"destructive"}
-            onClick={() => deleteBot({ id: bot.id })}
-          >
+          <DeleteBotButton onClickAction={() => deleteBot({ id: bot.id })}>
             Delet{isDeleting ? "ing..." : "e"}
-          </Button>
+          </DeleteBotButton>
         ) : null}
       </form>
     </Form>

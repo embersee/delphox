@@ -5,17 +5,19 @@ import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
 import BotForm from "./BotForm";
 import { Bot } from "@/lib/db/schema/bots";
+import Link from "next/link";
 
-export default function BotModal({ 
+export default function BotModal({
   bot,
   emptyState,
-}: { 
+}: {
   bot?: Bot;
   emptyState?: boolean;
 }) {
@@ -25,7 +27,7 @@ export default function BotModal({
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
-      { emptyState ? (
+        {emptyState ? (
           <Button>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -45,16 +47,24 @@ export default function BotModal({
             New Bot
           </Button>
         ) : (
-        <Button
-          variant={editing ? "ghost" : "outline"}
-          size={editing ? "sm" : "icon"}
-        >
-          {editing ? "Edit" : "+"}
-        </Button> )}
+          <Button
+            variant={editing ? "ghost" : "outline"}
+            size={editing ? "sm" : "icon"}
+          >
+            {editing ? "Edit" : "+"}
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="px-5 pt-5">
-          <DialogTitle>{ editing ? "Edit" : "Create" } Bot</DialogTitle>
+          <DialogTitle>{editing ? "Edit" : "Create"} Bot</DialogTitle>
+          <DialogDescription>
+            Please get the required information about your bot from{" "}
+            <Link href="https://t.me/BotFather" target="_blank">
+              @BotFather
+            </Link>{" "}
+            in the Telegram app.
+          </DialogDescription>
         </DialogHeader>
         <div className="px-5 pb-5">
           <BotForm closeModal={closeModal} bot={bot} />

@@ -1,4 +1,5 @@
 import { getUser } from "@/lib/api/auth/queries";
+import { checkAuth } from "@/lib/auth/utils";
 import { redirect } from "next/navigation";
 
 export default async function RegistrationLayout({
@@ -6,13 +7,7 @@ export default async function RegistrationLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = await getUser();
+  checkAuth();
 
-  if (!user) return redirect("/");
-
-  if (user.registered) {
-    redirect("/dash");
-  }
-
-  return <>{children}</>;
+  return <main>{children}</main>;
 }

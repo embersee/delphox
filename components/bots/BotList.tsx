@@ -3,7 +3,6 @@ import { CompleteBot } from "@/lib/db/schema/bots";
 import { trpc } from "@/lib/trpc/client";
 import BotModal from "./BotModal";
 
-
 export default function BotList({ bots }: { bots: CompleteBot[] }) {
   const { data: b } = trpc.bots.getBots.useQuery(undefined, {
     initialData: { bots },
@@ -25,9 +24,11 @@ export default function BotList({ bots }: { bots: CompleteBot[] }) {
 
 const Bot = ({ bot }: { bot: CompleteBot }) => {
   return (
-    <li className="flex justify-between my-2">
-      <div className="w-full">
-        <div>{bot.username}</div>
+    <li className="flex justify-between items-center my-2 rounded-md bg-muted/50 px-4">
+      <div className="w-full flex space-x-4">
+        <p>{bot.displayName}</p>
+        <p>{bot.username}</p>
+        <p>{bot.userId}</p>
       </div>
       <BotModal bot={bot} />
     </li>
@@ -36,8 +37,8 @@ const Bot = ({ bot }: { bot: CompleteBot }) => {
 
 const EmptyState = () => {
   return (
-    <div className="text-center">
-      <h3 className="mt-2 text-sm font-semibold text-gray-900">No bots</h3>
+    <div className="text-center page">
+      <h3 className="mt-2 text-sm font-semibold">No bots</h3>
       <p className="mt-1 text-sm text-gray-500">
         Get started by creating a new bot.
       </p>
@@ -47,4 +48,3 @@ const EmptyState = () => {
     </div>
   );
 };
-
