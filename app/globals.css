@@ -88,5 +88,13 @@ main {
 }
 
 a {
-  @apply text-rei underline decoration-from-font;
+  @apply text-rei underline;
+}
+
+h1 {
+  @apply text-2xl;
+}
+
+h2 {
+  @apply text-lg;
 }

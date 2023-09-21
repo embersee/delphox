@@ -23,10 +23,10 @@ import { DeleteBotButton } from "./DeleteBotButton";
 
 const BotForm = ({
   bot,
-}: // closeModal,
-{
+  closeModal,
+}: {
   bot?: Bot;
-  // closeModal?: () => void;
+  closeModal: () => void;
 }) => {
   const { toast } = useToast();
 
@@ -49,8 +49,8 @@ const BotForm = ({
 
   const onSuccess = (action: "create" | "update" | "delete") => {
     utils.bots.getBots.invalidate();
-    router.refresh();
-    // closeModal();
+    // router.refresh();
+    closeModal();
     toast({
       title: "Success 👏",
       description: `Bot ${action}d!`,
@@ -62,8 +62,8 @@ const BotForm = ({
 
   const onError = (msg: string) => {
     utils.bots.getBots.invalidate();
-    router.refresh();
-    // closeModal();
+    // router.refresh();
+    closeModal();
     toast({
       title: "Error",
       description: msg,
@@ -163,6 +163,9 @@ const BotForm = ({
           )}
         />
 
+        <div className="text-xs text-red-700">
+          <p>* required fields</p>
+        </div>
         <Button
           type="submit"
           className="mr-1"
@@ -177,9 +180,6 @@ const BotForm = ({
             Delet{isDeleting ? "ing..." : "e"}
           </DeleteBotButton>
         ) : null}
-        <div className="text-xs text-red-700">
-          <p>* required fields</p>
-        </div>
       </form>
     </Form>
   );

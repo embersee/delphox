@@ -4,6 +4,8 @@ import {
   type XIcon as LucideIcon,
   MoonStar,
   ArrowUpRight,
+  Check,
+  X,
 } from "lucide-react";
 
 export const Icons = {
@@ -26,4 +28,6 @@ export const Icons = {
     </svg>
   ),
   linkArrow: ArrowUpRight,
+  check: Check,
+  x: X,
 };
