@@ -1,6 +1,5 @@
-import { getUser } from "@/lib/api/auth/queries";
+import DashNav from "@/components/layouts/DashNav";
 import { checkAuth } from "@/lib/auth/utils";
-import { redirect } from "next/navigation";
 
 export default async function RegistrationLayout({
   children,
@@ -9,5 +8,10 @@ export default async function RegistrationLayout({
 }) {
   checkAuth();
 
-  return <main>{children}</main>;
+  return (
+    <>
+      <DashNav />
+      <main>{children}</main>
+    </>
+  );
 }

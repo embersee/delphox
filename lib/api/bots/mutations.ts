@@ -19,7 +19,6 @@ interface User {
   telegram_id: string;
   first_name: string;
   last_name: string;
-  registered?: boolean | undefined;
 }
 
 export const createBot = async (bot: NewBotParams, user: User) => {

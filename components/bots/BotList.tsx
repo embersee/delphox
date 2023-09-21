@@ -2,6 +2,9 @@
 import { CompleteBot } from "@/lib/db/schema/bots";
 import { trpc } from "@/lib/trpc/client";
 import BotModal from "./BotModal";
+import Link from "next/link";
+import { Icons } from "../ui/icons";
+import { Button } from "../ui/button";
 
 export default function BotList({ bots }: { bots: CompleteBot[] }) {
   const { data: b } = trpc.bots.getBots.useQuery(undefined, {
@@ -14,7 +17,7 @@ export default function BotList({ bots }: { bots: CompleteBot[] }) {
   }
 
   return (
-    <ul>
+    <ul className="space-y-2">
       {b.bots.map((bot) => (
         <Bot bot={bot} key={bot.id} />
       ))}
@@ -24,11 +27,16 @@ export default function BotList({ bots }: { bots: CompleteBot[] }) {
 
 const Bot = ({ bot }: { bot: CompleteBot }) => {
   return (
-    <li className="flex justify-between items-center my-2 rounded-md bg-muted/50 px-4">
-      <div className="w-full flex space-x-4">
-        <p>{bot.displayName}</p>
-        <p>{bot.username}</p>
-        <p>{bot.userId}</p>
+    <li className="flex justify-between items-center p-2 rounded-md bg-secondary/50">
+      <div className="w-full flex items-center space-x-4">
+        <Button variant="secondary">{bot.displayName}</Button>
+
+        <Link
+          href={`https://t.me/${bot.username.substring(1)}`}
+          className="flex text-sm"
+        >
+          {bot.username} 🔗
+        </Link>
       </div>
       <BotModal bot={bot} />
     </li>

@@ -3,6 +3,7 @@ import {
   SunMedium,
   type XIcon as LucideIcon,
   MoonStar,
+  ArrowUpRight,
 } from "lucide-react";
 
 export const Icons = {
@@ -24,4 +25,5 @@ export const Icons = {
       ></path>
     </svg>
   ),
+  linkArrow: ArrowUpRight,
 };

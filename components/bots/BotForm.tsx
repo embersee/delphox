@@ -105,7 +105,7 @@ const BotForm = ({
           name="displayName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Choose display name!</FormLabel>
+              <FormLabel>Display name</FormLabel>
               <FormControl>
                 <Input
                   autoComplete="off"
@@ -125,7 +125,9 @@ const BotForm = ({
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Bot Username</FormLabel>
+              <FormLabel>
+                Bot Username <span className="text-red-700">*</span>
+              </FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -144,7 +146,9 @@ const BotForm = ({
           name="botToken"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Bot Token</FormLabel>
+              <FormLabel>
+                Bot Token <span className="text-red-700">*</span>
+              </FormLabel>
               <FormControl>
                 <Input
                   type="password"
@@ -173,6 +177,9 @@ const BotForm = ({
             Delet{isDeleting ? "ing..." : "e"}
           </DeleteBotButton>
         ) : null}
+        <div className="text-xs text-red-700">
+          <p>* required fields</p>
+        </div>
       </form>
     </Form>
   );

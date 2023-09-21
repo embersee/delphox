@@ -6,6 +6,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -66,6 +67,7 @@ export default function BotModal({
             in the Telegram app.
           </DialogDescription>
         </DialogHeader>
+
         <div className="px-5 pb-5">
           <BotForm closeModal={closeModal} bot={bot} />
         </div>

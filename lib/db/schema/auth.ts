@@ -23,7 +23,6 @@ export const users = mysqlTable("user", {
     fsp: 3,
   }).defaultNow(),
   image: varchar("image", { length: 255 }),
-  registered: boolean("registered").default(false),
 });
 
 //👇 This code block will tell Drizzle that users & bots are related!
