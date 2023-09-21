@@ -6,7 +6,7 @@ export default async function RegistrationLayout({
 }: {
   children: React.ReactNode;
 }) {
-  checkAuth();
+  await checkAuth();
 
   return (
     <>

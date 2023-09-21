@@ -87,10 +87,6 @@ main {
   @apply flex-grow flex flex-col justify-center items-center min-h-[calc(100vh-4rem)];
 }
 
-a {
-  @apply text-rei underline;
-}
-
 h1 {
   @apply text-2xl;
 }
