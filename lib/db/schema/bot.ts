@@ -1,6 +1,17 @@
 import { getBots } from "@/lib/api/bots/queries";
-import { botSchema } from "@/zodAutoGenSchemas";
 import { z } from "zod";
+
+const botSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  username: z.string(),
+  displayName: z.string(),
+  botToken: z.string(),
+  active: z.boolean(),
+  description: z.string(),
+  shortDescription: z.string(),
+  menuButton: z.string(),
+});
 
 export const insertBotSchema = botSchema;
 

@@ -1,6 +1,13 @@
 import { getCommands } from "@/lib/api/commands/queries";
-import { commandSchema } from "@/zodAutoGenSchemas";
+
 import { z } from "zod";
+
+export const commandSchema = z.object({
+  id: z.string(),
+  command: z.string(),
+  content: z.string(),
+  botId: z.string().nullish(),
+});
 
 export const insertCommandSchema = commandSchema;
 export const insertCommandParams = commandSchema.omit({
