@@ -7,7 +7,10 @@ export const getBots = async () => {
   const { session } = await getUserAuth();
   const b = await db.bot.findMany({
     where: {
-      userId: session?.user.id!,
+      // userId: session?.user.id!,
+      User: {
+        id: session?.user.id!,
+      },
     },
   });
 
