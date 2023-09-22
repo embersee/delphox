@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
 
         const user = await validator.validate(data);
 
-        console.log(JSON.stringify(user, null, 4));
+        console.log(user);
 
         if (!user) return null;
 
@@ -41,7 +41,7 @@ export const authOptions: NextAuthOptions = {
           image: user.photo_url,
         };
 
-        const exists = await db.user.findFirst({
+        const exists = await db.user.findUnique({
           where: {
             id: user.id.toString(),
           },
