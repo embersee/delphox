@@ -1,18 +1,15 @@
-import { drizzle } from "drizzle-orm/planetscale-serverless";
-import { connect } from "@planetscale/database";
-import { env } from "@/lib/env.mjs";
+import { PrismaClient } from "@prisma/client/edge";
 
-import * as auth from "@/lib/db/schema/auth";
-import * as bots from "@/lib/db/schema/bots";
+declare global {
+  // allow global `var` declarations
+  // eslint-disable-next-line no-var
+  var db: PrismaClient | undefined;
+}
 
-// create the connection
-const connection = connect({
-  url: env.DATABASE_URL,
-});
+export const db =
+  global.db ||
+  new PrismaClient({
+    log: ["query"],
+  });
 
-export const db = drizzle(connection, {
-  schema: {
-    ...auth,
-    ...bots,
-  },
-});
+if (process.env.NODE_ENV !== "production") global.db = db;

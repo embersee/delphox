@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "../ui/button";
-import { CompleteBot } from "@/lib/db/schema/bots";
+import { CompleteBot } from "@/lib/db/schema/bot";
 import { trpc } from "@/lib/trpc/client";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";

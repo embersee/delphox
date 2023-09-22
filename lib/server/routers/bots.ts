@@ -4,7 +4,7 @@ import {
   botIdSchema,
   insertBotParams,
   updateBotParams,
-} from "@/lib/db/schema/bots";
+} from "@/lib/db/schema/bot";
 import { createBot, deleteBot, updateBot } from "@/lib/api/bots/mutations";
 
 export const botsRouter = router({
@@ -17,6 +17,7 @@ export const botsRouter = router({
   createBot: protectedProcedure
     .input(insertBotParams)
     .mutation(async ({ input, ctx }) => {
+      console.log("creating");
       return createBot(input, ctx.user);
     }),
   updateBot: protectedProcedure

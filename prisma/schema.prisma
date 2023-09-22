@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  relationMode = "prisma"
+  url          = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @unique
+  username      String
+  name          String?
+  displayName   String?
+  email         String?
+  emailVerified DateTime?
+  image         String?
+
+  bot Bot[]
+}
+
+model Bot {
+  id               String  @id @default(cuid())
+  userId           String
+  username         String
+  displayName      String  @default("")
+  botToken         String  @db.VarChar(50)
+  active           Boolean @default(false)
+  description      String  @default("") @db.VarChar(512)
+  shortDescription String  @default("") @db.VarChar(120)
+  menuButton       String  @default("")
+
+  command Command[]
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Command {
+  id      String  @id @default(cuid())
+  command String
+  content String
+  Bot     Bot?    @relation(fields: [botId], references: [id])
+  botId   String?
+
+  @@index([botId])
+}

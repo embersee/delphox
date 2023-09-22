@@ -1,5 +1,5 @@
 "use client";
-import { CompleteBot } from "@/lib/db/schema/bots";
+import { CompleteBot } from "@/lib/db/schema/bot";
 import { trpc } from "@/lib/trpc/client";
 import BotModal from "./BotModal";
 import Link from "next/link";
