@@ -1,6 +1,11 @@
 "use client";
 
-import { Bot, NewBotParams, insertBotParams } from "@/lib/db/schema/bots";
+import {
+  Bot,
+  CompleteBot,
+  NewBotParams,
+  insertBotParams,
+} from "@/lib/db/schema/bot";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -32,7 +37,7 @@ const BotForm = ({
   bot,
   closeModal,
 }: {
-  bot?: Bot;
+  bot?: CompleteBot;
   closeModal: () => void;
 }) => {
   const { toast } = useToast();
@@ -102,6 +107,7 @@ const BotForm = ({
     if (editing) {
       updateBot({ ...values, id: bot.id });
     } else {
+      console.log("submit");
       createBot(values);
     }
   };

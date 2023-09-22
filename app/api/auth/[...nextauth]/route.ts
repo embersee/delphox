@@ -1,19 +1,16 @@
-import { db } from "@/lib/db";
-import { DefaultSession, NextAuthOptions, Session, User } from "next-auth";
+import { DefaultSession, NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import { env } from "@/lib/env.mjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { AuthDataValidator, objectToAuthDataMap } from "@telegram-auth/server";
-import { NewUser, users } from "@/lib/db/schema/auth";
-import { eq } from "drizzle-orm";
+
+import { db } from "@/lib/db";
 
 declare module "next-auth" {
   interface Session {
     user: DefaultSession["user"] & {
       id: string;
-      telegram_id: string;
-      first_name: string;
-      last_name: string;
+      username: string;
     };
   }
 }
@@ -33,32 +30,30 @@ export const authOptions: NextAuthOptions = {
 
         const user = await validator.validate(data);
 
+        console.log(JSON.stringify(user, null, 4));
+
         if (!user) return null;
 
-        const newUser: NewUser = {
+        const visitor = {
           id: user.id.toString(),
-          telegram_id: user.id.toString(),
-          name: user.username,
-          first_name: user.first_name || "",
-          last_name: user.last_name || "",
-          image: user.photo_url || "",
+          username: user.username!,
+          name: [user.first_name, user.last_name || ""].join(" "),
+          image: user.photo_url,
         };
 
-        const exists = await db.query.users.findFirst({
-          where: eq(users.telegram_id, newUser.telegram_id),
+        const exists = await db.user.findFirst({
+          where: {
+            id: user.id.toString(),
+          },
         });
 
-        if (exists) return newUser;
+        if (exists) return visitor;
 
-        const createNewUser = await db.insert(users).values(newUser);
+        await db.user.create({
+          data: visitor,
+        });
 
-        if (createNewUser.rowsAffected) {
-          console.log(createNewUser.rowsAffected);
-
-          return newUser;
-        }
-
-        return null;
+        return visitor;
       },
     }),
   ],

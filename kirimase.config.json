@@ -1,15 +1,15 @@
 {
   "hasSrc": false,
   "packages": [
-    "drizzle",
-    "next-auth",
     "trpc",
-    "shadcn-ui"
+    "shadcn-ui",
+    "prisma",
+    "next-auth"
   ],
   "preferredPackageManager": "npm",
   "rootPath": "",
   "driver": "mysql",
   "provider": "planetscale",
-  "orm": "drizzle",
+  "orm": "prisma",
   "auth": "next-auth"
 }

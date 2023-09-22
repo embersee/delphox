@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import BotForm from "./BotForm";
-import { Bot } from "@/lib/db/schema/bots";
+import { CompleteBot } from "@/lib/db/schema/bot";
 import Link from "next/link";
 import { Activation } from "./ActivateBot";
 import { Badge } from "../ui/badge";
@@ -20,7 +20,7 @@ export default function BotModal({
   bot,
   emptyState,
 }: {
-  bot?: Bot;
+  bot?: CompleteBot;
   emptyState?: boolean;
 }) {
   const [open, setOpen] = useState(false);
