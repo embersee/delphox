@@ -41,7 +41,7 @@ export const authOptions: NextAuthOptions = {
           image: user.photo_url,
         };
 
-        const exists = await db.user.findUnique({
+        const exists = await db.user.findFirst({
           where: {
             id: user.id.toString(),
           },
