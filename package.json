@@ -4,16 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "db:generate": "drizzle-kit generate:mysql",
-    "db:migrate": "tsx lib/db/migrate.ts",
-    "db:drop": "drizzle-kit drop",
-    "db:pull": "drizzle-kit introspect:mysql",
-    "db:push": "drizzle-kit push:mysql",
-    "db:studio": "drizzle-kit studio",
-    "db:check": "drizzle-kit check:mysql"
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@auth/core": "^0.15.0",
