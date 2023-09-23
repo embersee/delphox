@@ -30,8 +30,6 @@ export const authOptions: NextAuthOptions = {
 
         const user = await validator.validate(data);
 
-        console.log(user);
-
         if (!user) return null;
 
         const visitor = {

@@ -84,7 +84,7 @@ export default function BotModal({
         </DialogHeader>
 
         <div className="px-5 pb-5">
-          <BotForm closeModal={closeModal} bot={bot} />
+          {/* <BotForm closeModal={closeModal} bot={bot} /> */}
         </div>
       </DialogContent>
     </Dialog>

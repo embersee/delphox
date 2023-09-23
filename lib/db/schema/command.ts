@@ -28,6 +28,6 @@ export type UpdateCommandParams = z.infer<typeof updateCommandParams>;
 export type CommandId = z.infer<typeof commandIdSchema>["id"];
 
 // this type infers the return from getBots() - meaning it will include any joins
-export type CompleteBot = Awaited<
+export type CompleteCommand = Awaited<
   ReturnType<typeof getCommands>
 >["commands"][number];

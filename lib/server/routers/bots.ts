@@ -17,7 +17,6 @@ export const botsRouter = router({
   createBot: protectedProcedure
     .input(insertBotParams)
     .mutation(async ({ input, ctx }) => {
-      console.log("creating");
       return createBot(input, ctx.user);
     }),
   updateBot: protectedProcedure

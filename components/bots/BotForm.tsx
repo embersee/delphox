@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Bot,
   CompleteBot,
   NewBotParams,
   insertBotParams,
@@ -32,13 +31,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { PlusCircleIcon, X } from "lucide-react";
 
 const BotForm = ({
   bot,
-  closeModal,
+  setIsOpen,
 }: {
   bot?: CompleteBot;
-  closeModal: () => void;
+  setIsOpen: (isOpen: boolean) => void;
 }) => {
   const { toast } = useToast();
 
@@ -64,7 +64,7 @@ const BotForm = ({
   const onSuccess = (action: "create" | "update" | "delete") => {
     utils.bots.getBots.invalidate();
     // router.refresh();
-    closeModal();
+    setIsOpen(false);
     toast({
       title: "Success 👏",
       description: `Bot ${action}d!`,
@@ -77,7 +77,7 @@ const BotForm = ({
   const onError = (msg: string) => {
     utils.bots.getBots.invalidate();
     // router.refresh();
-    closeModal();
+    setIsOpen(true);
     toast({
       title: "Error",
       description: msg,
@@ -107,13 +107,16 @@ const BotForm = ({
     if (editing) {
       updateBot({ ...values, id: bot.id });
     } else {
-      console.log("submit");
       createBot(values);
     }
   };
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="space-y-4 py-10 flex flex-col"
+        autoComplete="off"
+      >
         <FormField
           control={form.control}
           name="displayName"
@@ -177,6 +180,10 @@ const BotForm = ({
           )}
         />
 
+        <div className="text-xs text-red-700">
+          <p>* required fields</p>
+        </div>
+
         {editing && (
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
@@ -225,23 +232,37 @@ const BotForm = ({
           </Accordion>
         )}
 
-        <div className="text-xs text-red-700">
-          <p>* required fields</p>
+        <div className="self-end flex items-center space-x-4">
+          <Button
+            type="button"
+            variant="ghost"
+            size="lg"
+            className="space-x-1 pr-4"
+            onClick={() => setIsOpen(false)}
+          >
+            <X className="h-4" />
+            <span>Close</span>
+          </Button>
+          {editing ? (
+            <DeleteBotButton onClickAction={() => deleteBot({ id: bot.id })}>
+              Delet{isDeleting ? "ing..." : "e"}
+            </DeleteBotButton>
+          ) : null}
+          <Button
+            type="submit"
+            size="lg"
+            variant="highlight"
+            disabled={isCreating || isUpdating}
+            className="space-x-1 pr-4"
+          >
+            <PlusCircleIcon className="h-4" />
+            <span>
+              {editing
+                ? `Sav${isUpdating ? "ing..." : "e"}`
+                : `Creat${isCreating ? "ing..." : "e"}`}
+            </span>
+          </Button>
         </div>
-        <Button
-          type="submit"
-          className="mr-1"
-          disabled={isCreating || isUpdating}
-        >
-          {editing
-            ? `Sav${isUpdating ? "ing..." : "e"}`
-            : `Creat${isCreating ? "ing..." : "e"}`}
-        </Button>
-        {editing ? (
-          <DeleteBotButton onClickAction={() => deleteBot({ id: bot.id })}>
-            Delet{isDeleting ? "ing..." : "e"}
-          </DeleteBotButton>
-        ) : null}
       </form>
     </Form>
   );

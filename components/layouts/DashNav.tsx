@@ -9,8 +9,8 @@ export default async function DashNav() {
   const { session } = await getUserAuth();
   if (!session) return null;
   return (
-    <nav className="flex h-16 justify-between items-center px-10">
-      <div className="flex space-x-2">
+    <nav className="flex p-2 nav max-w-7xl mx-auto mt-4 justify-between items-center ">
+      <div className="flex items-center space-x-2">
         <Link href="/">
           <Button variant="ghost" className="text-xl">
             Delphox

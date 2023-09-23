@@ -6,6 +6,7 @@ import TrpcProvider from "@/lib/trpc/Provider";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/utils/ThemeProvider";
 import { TailwindIndicator } from "@/components/utils/TailwindIndicator";
+import Background from "@/components/layouts/Background";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
               {children}
               <Toaster />
+              <Background />
               <TailwindIndicator />
             </ThemeProvider>
           </TrpcProvider>

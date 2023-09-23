@@ -39,7 +39,7 @@ const ActivateBotButton = ({
           {children}
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="z-[250]">
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>{desc}</AlertDialogDescription>
@@ -76,7 +76,7 @@ export const Activation = ({ bot }: { bot: CompleteBot }) => {
 
   const onError = (msg: string) => {
     utils.bots.getBots.invalidate();
-    router.refresh();
+    // router.refresh();
     toast({
       title: "Error",
       description: msg,

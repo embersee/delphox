@@ -10,6 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "../ui/button";
+import { XCircle } from "lucide-react";
 
 export const DeleteBotButton = ({
   children,
@@ -21,11 +22,17 @@ export const DeleteBotButton = ({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button type="button" variant="destructive">
-          {children}
+        <Button
+          type="button"
+          variant="destructive"
+          size="lg"
+          className="space-x-1 pr-5 "
+        >
+          <XCircle className="h-4" />
+          <span>{children}</span>
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="z-[250]">
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>

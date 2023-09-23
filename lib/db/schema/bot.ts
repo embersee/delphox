@@ -13,7 +13,7 @@ const botSchema = z.object({
   menuButton: z.string(),
 });
 
-export const insertBotSchema = botSchema;
+export const insertBotSchema = botSchema.omit({ id: true });
 
 export const insertBotParams = botSchema
   .extend({
@@ -30,7 +30,7 @@ export const insertBotParams = botSchema
     active: z.boolean().default(false),
   })
   .omit({
-    // id: true,
+    id: true,
     userId: true,
   });
 
@@ -56,3 +56,6 @@ export type BotId = z.infer<typeof botIdSchema>["id"];
 
 // this type infers the return from getBots() - meaning it will include any joins
 export type CompleteBot = Awaited<ReturnType<typeof getBots>>["bots"][number];
+export type EmptyBot = Partial<
+  Awaited<ReturnType<typeof getBots>>["bots"][number]
+>;
