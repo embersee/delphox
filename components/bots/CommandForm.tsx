@@ -84,14 +84,14 @@ const CommandForm = ({
   });
 
   const onSuccess = (action: "create" | "update" | "delete") => {
+    utils.bots.getBotsWithCommands.invalidate();
+
     if (action == "delete")
       return toast({
         title: "Success 👏",
         description: `Command ${action}d!`,
         variant: "default",
       });
-
-    utils.bots.getBotsWithCommands.invalidate();
 
     setIsOpen(false);
     toast({
@@ -212,13 +212,24 @@ const CommandForm = ({
                 )}
               />
 
-              <Button
-                type="button"
-                className="self-center mt-2"
-                onClick={() => removeCommand(index, commands.at(index)?.id)}
-              >
-                Remove
-              </Button>
+              {commands.at(index)?.id ? (
+                <Button
+                  type="button"
+                  variant="destructive"
+                  className="self-center mt-2"
+                  onClick={() => removeCommand(index, commands.at(index)?.id)}
+                >
+                  Delete
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  className="self-center mt-2"
+                  onClick={() => removeCommand(index, commands.at(index)?.id)}
+                >
+                  Remove
+                </Button>
+              )}
             </div>
           );
         })}
