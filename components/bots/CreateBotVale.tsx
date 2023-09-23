@@ -29,7 +29,6 @@ export const useValeStore = create<ValeStore>()((set) => ({
   closeVale: () => set({ isOpen: false }),
   bot: undefined,
   setBot: (bot) => set({ bot }),
-  // setIsOpen: (isOpen) => set((state) => ({ isOpen: !state.isOpen })),
 }));
 
 export function CreateProjectVale() {
@@ -52,11 +51,11 @@ export function CreateProjectVale() {
               <div>
                 {bot?.active ? (
                   <Badge variant="outline" className=" h-8 border-green-300">
-                    Status: Active
+                    Active
                   </Badge>
                 ) : (
                   <Badge variant="outline" className=" h-8 border-orange-300">
-                    Status: Inactive
+                    Inactive
                   </Badge>
                 )}
               </div>

@@ -17,15 +17,11 @@ export const getCommands = async () => {
 };
 
 export const getCommandsById = async (id: CommandId) => {
-  const { session } = await getUserAuth();
   const { id: commandId } = commandIdSchema.parse({ id });
 
   const c = await db.command.findFirst({
     where: {
       id: commandId,
-      Bot: {
-        userId: session?.user.id,
-      },
     },
   });
 

@@ -1,4 +1,4 @@
-import { getBots } from "@/lib/api/bots/queries";
+import { getBots, getBotsWithCommands } from "@/lib/api/bots/queries";
 import { z } from "zod";
 
 const botSchema = z.object({
@@ -59,3 +59,7 @@ export type CompleteBot = Awaited<ReturnType<typeof getBots>>["bots"][number];
 export type EmptyBot = Partial<
   Awaited<ReturnType<typeof getBots>>["bots"][number]
 >;
+
+export type CompleteBotWithCommands = Awaited<
+  ReturnType<typeof getBotsWithCommands>
+>["bots"][number];

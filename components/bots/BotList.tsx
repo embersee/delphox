@@ -1,20 +1,20 @@
 "use client";
+
 import { CompleteBot } from "@/lib/db/schema/bot";
 import { trpc } from "@/lib/trpc/client";
-import BotModal from "./BotModal";
-import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
+
+import Link from "next/link";
+import { useValeStore } from "./CreateBotVale";
+
+import { ArrowUpRightIcon, ChevronRightSquare, Settings2 } from "lucide-react";
 
 export default function BotList({ bots }: { bots: CompleteBot[] }) {
   const { data: b } = trpc.bots.getBots.useQuery(undefined, {
     initialData: { bots },
     refetchOnMount: false,
   });
-
-  if (b.bots.length === 0) {
-    return <EmptyState />;
-  }
 
   return (
     <ul className="space-y-2">
@@ -26,44 +26,54 @@ export default function BotList({ bots }: { bots: CompleteBot[] }) {
 }
 
 const Bot = ({ bot }: { bot: CompleteBot }) => {
+  const { setBot, setIsOpen } = useValeStore();
+
+  const editBot = () => {
+    setBot(bot);
+    setIsOpen(true);
+  };
+
   return (
-    <li className="flex justify-between items-center p-2 rounded-md bg-secondary/30">
-      <div className="w-full flex items-center space-x-4">
+    <li className="flex justify-between items-center p-2 pl-4 rounded-md bg-secondary/30 hover:bg-secondary/60 transition-colors">
+      <div className="w-full flex items-center justify-between space-x-4">
         <Link
           href={`https://t.me/${bot.username.substring(1)}`}
-          className="flex text-sm"
+          className="flex text-md font-medium items-center hover:underline group capitalize"
           target="_blank"
         >
-          <Button variant="secondary">{bot.displayName}</Button>{" "}
+          <span>{bot.displayName}</span>
+          <ArrowUpRightIcon className="h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
         </Link>
 
-        {bot.active ? (
-          <Badge variant="outline" className=" border-green-300">
-            Active
-          </Badge>
-        ) : (
-          <Badge variant="outline" className=" border-orange-300">
-            Inactive
-          </Badge>
-        )}
-      </div>
-      <div className="flex space-x-2">
-        <BotModal bot={bot} />
+        <div className="space-x-4 self-end flex items-center">
+          {bot.active ? (
+            <Badge variant="outline" className=" border-green-300">
+              Active
+            </Badge>
+          ) : (
+            <Badge variant="outline" className=" border-orange-300">
+              Inactive
+            </Badge>
+          )}
+
+          <Button
+            variant="secondary"
+            className="space-x-2"
+            // onClick={() => editBot()}
+          >
+            <ChevronRightSquare className=" h-4 w-4" />
+            <span>Commands</span>
+          </Button>
+          <Button
+            variant="secondary"
+            className="space-x-2"
+            onClick={() => editBot()}
+          >
+            <Settings2 className=" h-4 w-4" />
+            <span>Edit</span>
+          </Button>
+        </div>
       </div>
     </li>
-  );
-};
-
-const EmptyState = () => {
-  return (
-    <div className="text-center page">
-      <h2 className="mt-2 text-sm font-semibold">No bots</h2>
-      <p className="mt-1 text-sm text-gray-500">
-        Get started by creating a new bot.
-      </p>
-      <div className="mt-6">
-        <BotModal emptyState={true} />
-      </div>
-    </div>
   );
 };

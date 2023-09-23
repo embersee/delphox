@@ -12,7 +12,7 @@ export default async function DashNav() {
     <nav className="flex p-2 nav max-w-7xl mx-auto mt-4 justify-between items-center ">
       <div className="flex items-center space-x-2">
         <Link href="/">
-          <Button variant="ghost" className="text-xl">
+          <Button variant="link" className="text-xl decoration-from-font">
             Delphox
           </Button>
         </Link>

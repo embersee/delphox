@@ -14,6 +14,20 @@ export const getBots = async () => {
   return { bots: b };
 };
 
+export const getBotsWithCommands = async () => {
+  const { session } = await getUserAuth();
+  const b = await db.bot.findMany({
+    where: {
+      userId: session?.user.id!,
+    },
+    include: {
+      command: true,
+    },
+  });
+
+  return { bots: b };
+};
+
 export const getBotById = async (id: BotId) => {
   const { session } = await getUserAuth();
   const { id: botId } = botIdSchema.parse({ id });

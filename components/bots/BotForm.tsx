@@ -260,6 +260,7 @@ const BotForm = ({
               {editing
                 ? `Sav${isUpdating ? "ing..." : "e"}`
                 : `Creat${isCreating ? "ing..." : "e"}`}
+              {` `}Bot
             </span>
           </Button>
         </div>
