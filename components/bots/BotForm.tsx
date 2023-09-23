@@ -189,7 +189,7 @@ const BotForm = ({
           </div>
 
           {editing && (
-            <Accordion type="single" collapsible>
+            <Accordion type="single" collapsible className="w-[300px]">
               <AccordionItem value="item-1">
                 <AccordionTrigger>Extra configuration</AccordionTrigger>
                 <AccordionContent>
