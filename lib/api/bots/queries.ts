@@ -21,13 +21,7 @@ export const getBotsWithCommands = async () => {
       userId: session?.user.id!,
     },
     include: {
-      command: {
-        select: {
-          command: true,
-          content: true,
-          botId: true,
-        },
-      },
+      command: true,
     },
   });
 

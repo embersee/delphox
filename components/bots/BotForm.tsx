@@ -62,7 +62,7 @@ const BotForm = ({
   });
 
   const onSuccess = (action: "create" | "update" | "delete") => {
-    utils.bots.getBots.invalidate();
+    utils.bots.getBotsWithCommands.invalidate();
     // router.refresh();
     setIsOpen(false);
     toast({
@@ -75,7 +75,7 @@ const BotForm = ({
   };
 
   const onError = (msg: string) => {
-    utils.bots.getBots.invalidate();
+    utils.bots.getBotsWithCommands.invalidate();
     // router.refresh();
     setIsOpen(true);
     toast({

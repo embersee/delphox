@@ -20,14 +20,23 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
 import { PlusCircleIcon, X } from "lucide-react";
+import { Textarea } from "../ui/textarea";
+import { commandSchema } from "@/lib/db/schema/command";
 
 const validationSchema = z.object({
   commands: z.array(
-    z.object({ command: z.string(), content: z.string(), botId: z.string() })
+    z.object({
+      id: z.string().optional(),
+      command: z.string().min(1).max(32).startsWith("/"),
+      content: z.string().min(1).max(4096),
+      botId: z.string(),
+    })
   ),
 });
 
 type Command = z.infer<typeof validationSchema>["commands"][number];
+
+type UpdateCommand = z.infer<typeof commandSchema>;
 
 function useZodForm<TSchema extends z.ZodType>(
   props: Omit<UseFormProps<TSchema["_input"]>, "resolver"> & {
@@ -38,7 +47,7 @@ function useZodForm<TSchema extends z.ZodType>(
     ...props,
     resolver: zodResolver(props.schema, undefined, {
       // This makes it so we can use `.transform()`s on the schema without same transform getting applied again when it reaches the server
-      // rawValues: true
+      // raw: true,
     }),
   });
 
@@ -71,12 +80,19 @@ const CommandForm = ({
   });
 
   const onSuccess = (action: "create" | "update" | "delete") => {
-    utils.bots.getBots.invalidate();
-    // router.refresh();
+    if (action == "delete")
+      return toast({
+        title: "Success 👏",
+        description: `Command ${action}d!`,
+        variant: "default",
+      });
+
+    utils.bots.getBotsWithCommands.invalidate();
+
     setIsOpen(false);
     toast({
       title: "Success 👏",
-      description: `Bot ${action}d!`,
+      description: `Command ${action}d!`,
       variant: "default",
     });
 
@@ -84,8 +100,8 @@ const CommandForm = ({
   };
 
   const onError = (msg: string) => {
-    utils.bots.getBots.invalidate();
-    // router.refresh();
+    utils.bots.getBotsWithCommands.invalidate();
+
     setIsOpen(true);
     toast({
       title: "Error",
@@ -94,31 +110,52 @@ const CommandForm = ({
     });
   };
 
-  // const { mutate: createBot, isLoading: isCreating } =
-  //   trpc.bots.createBot.useMutation({
-  //     onSuccess: () => onSuccess("create"),
-  //     onError: (error) => onError(error.message),
-  //   });
+  const { mutate: createCommand, isLoading: isCreating } =
+    trpc.commands.createCommand.useMutation({
+      onSuccess: () => onSuccess("create"),
+      onError: (error) => onError(error.message),
+    });
 
-  // const { mutate: updateBot, isLoading: isUpdating } =
-  //   trpc.bots.updateBot.useMutation({
-  //     onSuccess: () => onSuccess("update"),
-  //     onError: (error) => onError(error.message),
-  //   });
+  const { mutate: updateCommand, isLoading: isUpdating } =
+    trpc.commands.updateCommand.useMutation({
+      onSuccess: () => onSuccess("update"),
+      onError: (error) => onError(error.message),
+    });
 
-  // const { mutate: deleteBot, isLoading: isDeleting } =
-  //   trpc.bots.deleteBot.useMutation({
-  //     onSuccess: () => onSuccess("delete"),
-  //     onError: (error) => onError(error.message),
-  //   });
+  const { mutate: deleteCommand, isLoading: isDeleting } =
+    trpc.commands.deleteCommand.useMutation({
+      onSuccess: () => onSuccess("delete"),
+      onError: (error) => onError(error.message),
+    });
 
   const handleSubmit = (values: { commands: Command[] }) => {
-    // if (editing) {
-    //   updateBot({ ...values, id: bot.id });
-    // } else {
-    //   createBot(values);
-    // }
-    console.log({ values: { commands } });
+    values.commands.forEach((c) => {
+      switch (c.id) {
+        case "":
+          console.log("create: ", c);
+          createCommand(c);
+
+          break;
+
+        default:
+          console.log("update: ", c);
+          if (c.id !== undefined) {
+            updateCommand(c as UpdateCommand);
+          }
+
+          break;
+      }
+    });
+  };
+
+  const removeCommand = (index: number, id?: string) => {
+    if (id !== undefined) {
+      remove(index);
+      deleteCommand({ id });
+      return;
+    }
+
+    remove(index);
   };
   return (
     <Form {...form}>
@@ -129,7 +166,7 @@ const CommandForm = ({
       >
         {fields.map((field, index) => {
           return (
-            <div key={field.id} className="flex items-center justify-between">
+            <div key={field.id} className="flex justify-between">
               <FormField
                 control={form.control}
                 name={`commands.${index}.command` as const}
@@ -157,7 +194,7 @@ const CommandForm = ({
                   <FormItem>
                     <FormLabel>Content: </FormLabel>
                     <FormControl>
-                      <Input
+                      <Textarea
                         className="w-[300px]"
                         autoComplete="off"
                         placeholder="Hello I'm a bot made by @username! nice to meet you!"
@@ -172,8 +209,8 @@ const CommandForm = ({
 
               <Button
                 type="button"
-                className="self-end h-9"
-                onClick={() => remove(index)}
+                className=" self-center h-9"
+                onClick={() => removeCommand(index, commands.at(index)?.id)}
               >
                 Remove
               </Button>
@@ -187,6 +224,7 @@ const CommandForm = ({
             variant="highlight"
             onClick={() =>
               append({
+                id: "",
                 command: "",
                 content: "",
                 botId: botId,
@@ -216,10 +254,9 @@ const CommandForm = ({
             className="space-x-1 pr-4"
           >
             <PlusCircleIcon className="h-4" />
-            <span>
-              {/* `Sav${isUpdating ? "ing..." : "e"}` */}
-              Save commands
-            </span>
+            <span>{`Sav${
+              isUpdating || isCreating ? "ing..." : "e"
+            } commands`}</span>
           </Button>
         </div>
       </form>

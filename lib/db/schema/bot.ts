@@ -18,7 +18,7 @@ export const insertBotSchema = botSchema.omit({ id: true });
 export const insertBotParams = botSchema
   .extend({
     id: z.coerce.string(),
-    username: z.string().min(1).includes("@"),
+    username: z.string().min(5).max(32).startsWith("@"),
     botToken: z
       .string()
       .min(1)

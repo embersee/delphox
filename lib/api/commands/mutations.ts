@@ -19,8 +19,8 @@ interface User {
   username: string;
 }
 
-export const createCommand = async (bot: NewCommandParams) => {
-  const newCommand = insertCommandSchema.parse({ ...bot });
+export const createCommand = async (command: NewCommandParams) => {
+  const newCommand = insertCommandSchema.parse({ ...command });
 
   try {
     await db.command.create({

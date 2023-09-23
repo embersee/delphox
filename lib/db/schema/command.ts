@@ -6,15 +6,20 @@ export const commandSchema = z.object({
   id: z.string(),
   command: z.string(),
   content: z.string(),
-  botId: z.string().nullish(),
+  botId: z.string(),
 });
 
-export const insertCommandSchema = commandSchema;
+export const insertCommandSchema = commandSchema
+  .extend({ botId: z.string() })
+  .omit({
+    id: true,
+  });
+
 export const insertCommandParams = commandSchema
   .extend({
-    command: z.string().default(""),
-    content: z.string().default(""),
-    botId: z.string().default(""),
+    command: z.string(),
+    content: z.string(),
+    botId: z.string(),
   })
   .omit({
     id: true,
@@ -22,7 +27,9 @@ export const insertCommandParams = commandSchema
 
 export const updateCommandSchema = commandSchema.extend({
   id: z.string().cuid(),
+  botId: z.string().cuid(),
 });
+
 export const updateCommandParams = updateCommandSchema.extend({});
 export const commandIdSchema = updateCommandSchema.pick({ id: true });
 
