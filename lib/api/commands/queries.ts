@@ -11,6 +11,11 @@ export const getCommands = async () => {
         userId: session?.user.id,
       },
     },
+    select: {
+      command: true,
+      content: true,
+      botId: true,
+    },
   });
 
   return { commands: c };

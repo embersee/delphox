@@ -42,11 +42,11 @@ model Bot {
 }
 
 model Command {
-  id      String  @id @default(cuid())
+  id      String @id @default(cuid())
   command String
   content String
-  Bot     Bot?    @relation(fields: [botId], references: [id])
-  botId   String?
+  Bot     Bot    @relation(fields: [botId], references: [id])
+  botId   String
 
   @@index([botId])
 }

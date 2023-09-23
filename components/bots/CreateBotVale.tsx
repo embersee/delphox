@@ -11,63 +11,96 @@ import { Slot } from "@radix-ui/react-slot";
 import { ButtonHTMLAttributes } from "react";
 import { create } from "zustand";
 import BotForm from "./BotForm";
-import { CompleteBot } from "@/lib/db/schema/bot";
+import { CompleteBot, CompleteBotWithCommands } from "@/lib/db/schema/bot";
 import { Badge } from "../ui/badge";
-import { Activation } from "./ActivateBot";
 import Link from "next/link";
+import CommandForm from "./CommandForm";
 
 type ValeStore = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  bot?: CompleteBot;
-  setBot: (bot?: CompleteBot) => void;
+  commands: boolean;
+  openCommands: (commands: boolean) => void;
+
+  bot?: CompleteBotWithCommands;
+  setBot: (bot?: CompleteBotWithCommands) => void;
 };
 
 export const useValeStore = create<ValeStore>()((set) => ({
   isOpen: false,
+
   setIsOpen: (isOpen) => set({ isOpen }),
+  commands: false,
+  openCommands: (commands) => set({ commands: commands }),
   closeVale: () => set({ isOpen: false }),
   bot: undefined,
   setBot: (bot) => set({ bot }),
 }));
 
 export function CreateProjectVale() {
-  const { isOpen, setIsOpen, bot, setBot } = useValeStore();
+  const { isOpen, setIsOpen, bot, setBot, commands, openCommands } =
+    useValeStore();
 
   const editing = !!bot?.id;
+
+  const existingCommands = bot?.command;
+
+  const cleanUp = () => {
+    setBot(undefined), openCommands(false);
+  };
+
   return (
     <ValeRoot
       open={isOpen}
       onOpenChange={(value) => setIsOpen(value)}
-      onClose={() => setBot(undefined)}
+      onClose={() => cleanUp()}
     >
       <ValeContent>
         <ValeIcon />
 
         <div className="h-[calc(100vh-7rem)] overflow-y-auto">
-          <div className="container max-w-4xl space-y-1 ">
-            <ValeTitle className="flex items-center justify-between gap-2">
-              {editing ? "Edit" : "Create"} Bot
-              <div>
-                {bot?.active ? (
-                  <Badge variant="outline" className=" h-8 border-green-300">
-                    Active
-                  </Badge>
+          <div className="container max-w-4xl h-full flex flex-col space-y-1 ">
+            <div className="py-8">
+              <ValeTitle className="flex items-center justify-between gap-2 ">
+                {editing ? "Edit" : "Create"} {commands ? "Commands" : "Bot"}
+                <div>
+                  {bot?.active ? (
+                    <Badge variant="outline" className=" h-8 border-green-300">
+                      Active
+                    </Badge>
+                  ) : (
+                    <Badge variant="outline" className=" h-8 border-orange-300">
+                      Inactive
+                    </Badge>
+                  )}
+                </div>
+              </ValeTitle>
+              <ValeDescription className="text-muted-foreground">
+                {commands ? (
+                  <>
+                    Configure the commands your bot will emit whenever users
+                    interact with it.
+                  </>
                 ) : (
-                  <Badge variant="outline" className=" h-8 border-orange-300">
-                    Inactive
-                  </Badge>
+                  <>
+                    Please get the required information about your bot from{" "}
+                    <Link href="https://t.me/BotFather" target="_blank">
+                      @BotFather
+                    </Link>{" "}
+                    in the Telegram app.
+                  </>
                 )}
-              </div>
-            </ValeTitle>
-            <ValeDescription className="text-muted-foreground">
-              Please get the required information about your bot from{" "}
-              <Link href="https://t.me/BotFather" target="_blank">
-                @BotFather
-              </Link>{" "}
-              in the Telegram app.
-            </ValeDescription>
-            <BotForm setIsOpen={setIsOpen} bot={bot} />
+              </ValeDescription>
+            </div>
+            {commands ? (
+              <CommandForm
+                setIsOpen={setIsOpen}
+                commands={existingCommands ?? []}
+                botId={bot?.id!}
+              />
+            ) : (
+              <BotForm setIsOpen={setIsOpen} bot={bot} />
+            )}
           </div>
         </div>
       </ValeContent>

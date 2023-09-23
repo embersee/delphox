@@ -1,6 +1,6 @@
 "use client";
 
-import { CompleteBot } from "@/lib/db/schema/bot";
+import { CompleteBot, CompleteBotWithCommands } from "@/lib/db/schema/bot";
 import { trpc } from "@/lib/trpc/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "../ui/button";
@@ -10,8 +10,8 @@ import { useValeStore } from "./CreateBotVale";
 
 import { ArrowUpRightIcon, ChevronRightSquare, Settings2 } from "lucide-react";
 
-export default function BotList({ bots }: { bots: CompleteBot[] }) {
-  const { data: b } = trpc.bots.getBots.useQuery(undefined, {
+export default function BotList({ bots }: { bots: CompleteBotWithCommands[] }) {
+  const { data: b } = trpc.bots.getBotsWithCommands.useQuery(undefined, {
     initialData: { bots },
     refetchOnMount: false,
   });
@@ -25,12 +25,18 @@ export default function BotList({ bots }: { bots: CompleteBot[] }) {
   );
 }
 
-const Bot = ({ bot }: { bot: CompleteBot }) => {
-  const { setBot, setIsOpen } = useValeStore();
+const Bot = ({ bot }: { bot: CompleteBotWithCommands }) => {
+  const { setBot, setIsOpen, openCommands } = useValeStore();
 
   const editBot = () => {
     setBot(bot);
     setIsOpen(true);
+  };
+
+  const editCommands = () => {
+    setBot(bot);
+    setIsOpen(true);
+    openCommands(true);
   };
 
   return (
@@ -59,7 +65,7 @@ const Bot = ({ bot }: { bot: CompleteBot }) => {
           <Button
             variant="secondary"
             className="space-x-2"
-            // onClick={() => editBot()}
+            onClick={() => editCommands()}
           >
             <ChevronRightSquare className=" h-4 w-4" />
             <span>Commands</span>

@@ -114,125 +114,127 @@ const BotForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-4 py-10 flex flex-col"
         autoComplete="off"
+        className="grow flex flex-col justify-start"
       >
-        <FormField
-          control={form.control}
-          name="displayName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Display name</FormLabel>
-              <FormControl>
-                <Input
-                  autoComplete="off"
-                  placeholder="e.g. My Store..."
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                You can change this at any time.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+        <div className="space-y-6 max-w-md grow ">
+          <FormField
+            control={form.control}
+            name="displayName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Display name</FormLabel>
+                <FormControl>
+                  <Input
+                    autoComplete="off"
+                    placeholder="e.g. My Store..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  You can change this at any time.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Bot Username <span className="text-red-700">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    autoComplete="off"
+                    placeholder="e.g. @username_bot"
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="botToken"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Bot Token <span className="text-red-700">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    autoComplete="off"
+                    placeholder="e.g. ***"
+                    {...field}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="text-xs text-red-700">
+            <p>* required fields</p>
+          </div>
+
+          {editing && (
+            <Accordion type="single" collapsible>
+              <AccordionItem value="item-1">
+                <AccordionTrigger>Extra configuration</AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-4 px-[1px]">
+                    <FormField
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Input
+                              autoComplete="off"
+                              placeholder="e.g. description"
+                              {...field}
+                            />
+                          </FormControl>
+
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="shortDescription"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Short Description</FormLabel>
+                          <FormControl>
+                            <Input
+                              autoComplete="off"
+                              placeholder="e.g. short description"
+                              {...field}
+                            />
+                          </FormControl>
+
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           )}
-        />
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Bot Username <span className="text-red-700">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  autoComplete="off"
-                  placeholder="e.g. @username_bot"
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="botToken"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Bot Token <span className="text-red-700">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input
-                  type="password"
-                  autoComplete="off"
-                  placeholder="e.g. ***"
-                  {...field}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <div className="text-xs text-red-700">
-          <p>* required fields</p>
         </div>
 
-        {editing && (
-          <Accordion type="single" collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger>Extra configuration</AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-4 px-[1px]">
-                  <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description</FormLabel>
-                        <FormControl>
-                          <Input
-                            autoComplete="off"
-                            placeholder="e.g. description"
-                            {...field}
-                          />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="shortDescription"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Short Description</FormLabel>
-                        <FormControl>
-                          <Input
-                            autoComplete="off"
-                            placeholder="e.g. short description"
-                            {...field}
-                          />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        )}
-
-        <div className="self-end flex items-center space-x-4">
+        <div className=" p-4 border-t-2 border-dashed flex items-center justify-end space-x-4">
           <Button
             type="button"
             variant="ghost"

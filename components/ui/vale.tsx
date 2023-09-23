@@ -22,7 +22,7 @@ const ValeContent = React.forwardRef<
       ref={ref}
       className={cn(
         ((className =
-          "fixed bottom-0 left-0 right-0 top-0 z-[200] mx-4 mt-16 flex transform-gpu flex-col rounded-t-lg border bg-background p-3 md:top-auto"),
+          "fixed bottom-0 left-0 right-0 top-0 z-[200] flex transform-gpu flex-col rounded-t-lg border bg-background p-3 md:top-auto"),
         className)
       )}
       {...props}

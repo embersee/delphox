@@ -10,9 +10,15 @@ export const commandSchema = z.object({
 });
 
 export const insertCommandSchema = commandSchema;
-export const insertCommandParams = commandSchema.omit({
-  id: true,
-});
+export const insertCommandParams = commandSchema
+  .extend({
+    command: z.string().default(""),
+    content: z.string().default(""),
+    botId: z.string().default(""),
+  })
+  .omit({
+    id: true,
+  });
 
 export const updateCommandSchema = commandSchema.extend({
   id: z.string().cuid(),
@@ -31,3 +37,7 @@ export type CommandId = z.infer<typeof commandIdSchema>["id"];
 export type CompleteCommand = Awaited<
   ReturnType<typeof getCommands>
 >["commands"][number];
+
+export type PartialCompleteCommand = Partial<
+  Awaited<ReturnType<typeof getCommands>>
+>["commands"];

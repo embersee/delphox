@@ -1,4 +1,8 @@
-import { getBotById, getBots } from "@/lib/api/bots/queries";
+import {
+  getBotById,
+  getBots,
+  getBotsWithCommands,
+} from "@/lib/api/bots/queries";
 import { protectedProcedure, publicProcedure, router } from "../trpc";
 import {
   botIdSchema,
@@ -8,8 +12,11 @@ import {
 import { createBot, deleteBot, updateBot } from "@/lib/api/bots/mutations";
 
 export const botsRouter = router({
-  getBots: publicProcedure.query(async () => {
+  getBots: protectedProcedure.query(async () => {
     return getBots();
+  }),
+  getBotsWithCommands: protectedProcedure.query(async () => {
+    return getBotsWithCommands();
   }),
   getBotById: publicProcedure.input(botIdSchema).query(async ({ input }) => {
     return getBotById(input.id);
