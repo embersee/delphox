@@ -117,7 +117,7 @@ const BotForm = ({
         autoComplete="off"
         className="grow flex flex-col justify-start"
       >
-        <div className="space-y-6 max-w-md grow ">
+        <div className="space-y-6 grow">
           <FormField
             control={form.control}
             name="displayName"
@@ -126,6 +126,7 @@ const BotForm = ({
                 <FormLabel>Display name</FormLabel>
                 <FormControl>
                   <Input
+                    className="w-[300px]"
                     autoComplete="off"
                     placeholder="e.g. My Store..."
                     {...field}
@@ -149,6 +150,7 @@ const BotForm = ({
                 <FormControl>
                   <Input
                     {...field}
+                    className="w-[300px]"
                     autoComplete="off"
                     placeholder="e.g. @username_bot"
                   />
@@ -172,6 +174,7 @@ const BotForm = ({
                     type="password"
                     autoComplete="off"
                     placeholder="e.g. ***"
+                    className="w-[300px]"
                     {...field}
                   />
                 </FormControl>
@@ -234,7 +237,7 @@ const BotForm = ({
           )}
         </div>
 
-        <div className=" p-4 border-t-2 border-dashed flex items-center justify-end space-x-4">
+        <div className="pt-4 pr-4 border-t-2 border-dashed flex items-center justify-end space-x-4">
           <Button
             type="button"
             variant="ghost"

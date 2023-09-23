@@ -23,6 +23,8 @@ import { PlusCircleIcon, X } from "lucide-react";
 import { Textarea } from "../ui/textarea";
 import { commandSchema } from "@/lib/db/schema/command";
 
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+
 const validationSchema = z.object({
   commands: z.array(
     z.object({
@@ -64,6 +66,8 @@ const CommandForm = ({
   botId: string;
 }) => {
   const { toast } = useToast();
+
+  const [animationParent] = useAutoAnimate();
 
   const router = useRouter();
   const utils = trpc.useContext();
@@ -160,13 +164,14 @@ const CommandForm = ({
   return (
     <Form {...form}>
       <form
+        ref={animationParent}
         onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-4 grow flex flex-col justify-start"
         autoComplete="off"
       >
         {fields.map((field, index) => {
           return (
-            <div key={field.id} className="flex justify-between">
+            <div key={field.id} className="flex justify-between gap-4">
               <FormField
                 control={form.control}
                 name={`commands.${index}.command` as const}
@@ -209,7 +214,7 @@ const CommandForm = ({
 
               <Button
                 type="button"
-                className=" self-center h-9"
+                className="self-center mt-2"
                 onClick={() => removeCommand(index, commands.at(index)?.id)}
               >
                 Remove
@@ -221,7 +226,7 @@ const CommandForm = ({
         <div className="grow">
           <Button
             type="button"
-            variant="highlight"
+            variant="secondary"
             onClick={() =>
               append({
                 id: "",
@@ -235,7 +240,7 @@ const CommandForm = ({
           </Button>
         </div>
 
-        <div className=" p-4 border-t-2 border-dashed flex items-center justify-end space-x-4">
+        <div className=" pt-4 pr-4 border-t-2 border-dashed flex items-center justify-end space-x-4">
           <Button
             type="button"
             variant="ghost"

@@ -6,9 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "../ui/button";
 
 import Link from "next/link";
-import { useValeStore } from "./CreateBotVale";
+import { useValeStore } from "./Vale";
 
 import { ArrowUpRightIcon, ChevronRightSquare, Settings2 } from "lucide-react";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 export default function BotList({ bots }: { bots: CompleteBotWithCommands[] }) {
   const { data: b } = trpc.bots.getBotsWithCommands.useQuery(undefined, {
@@ -16,8 +17,10 @@ export default function BotList({ bots }: { bots: CompleteBotWithCommands[] }) {
     refetchOnMount: false,
   });
 
+  const [animationParent] = useAutoAnimate();
+
   return (
-    <ul className="space-y-2">
+    <ul ref={animationParent} className="space-y-2">
       {b.bots.map((bot) => (
         <Bot bot={bot} key={bot.id} />
       ))}

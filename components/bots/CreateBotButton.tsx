@@ -2,7 +2,7 @@
 
 import { PlusCircleIcon } from "lucide-react";
 import { Button } from "../ui/button";
-import { CreateProjectValeTrigger } from "./CreateBotVale";
+import { CreateProjectValeTrigger } from "./Vale";
 
 export default function CreateBotButton() {
   return (

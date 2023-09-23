@@ -1,5 +1,5 @@
 import CreateBotButton from "@/components/bots/CreateBotButton";
-import { CreateProjectVale } from "@/components/bots/CreateBotVale";
+import { CreateProjectVale } from "@/components/bots/Vale";
 import BotList from "@/components/bots/BotList";
 
 import Heading from "@/components/ui/heading";

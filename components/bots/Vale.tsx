@@ -59,20 +59,22 @@ export function CreateProjectVale() {
         <ValeIcon />
 
         <div className="h-[calc(100vh-7rem)] overflow-y-auto">
-          <div className="container max-w-4xl h-full flex flex-col space-y-1 ">
+          <div className=" h-full flex flex-col space-y-1 mx-auto max-w-2xl ">
             <div className="py-8">
               <ValeTitle className="flex items-center justify-between gap-2 ">
                 {editing ? "Edit" : "Create"} {commands ? "Commands" : "Bot"}
                 <div>
-                  {bot?.active ? (
-                    <Badge variant="outline" className=" h-8 border-green-300">
-                      Active
-                    </Badge>
-                  ) : (
-                    <Badge variant="outline" className=" h-8 border-orange-300">
-                      Inactive
-                    </Badge>
-                  )}
+                  {bot ? (
+                    bot?.active ? (
+                      <Badge variant="outline" className=" border-green-300">
+                        Active
+                      </Badge>
+                    ) : (
+                      <Badge variant="outline" className=" border-orange-300">
+                        Inactive
+                      </Badge>
+                    )
+                  ) : null}
                 </div>
               </ValeTitle>
               <ValeDescription className="text-muted-foreground">
