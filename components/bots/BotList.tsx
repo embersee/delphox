@@ -46,9 +46,8 @@ const Bot = ({ bot }: { bot: CompleteBotWithCommands }) => {
     <li className="flex justify-between items-center p-2 pl-4 rounded-md bg-secondary/30 hover:bg-secondary/60 transition-colors">
       <div className="w-full flex items-center justify-between space-x-4">
         <Link
-          href={`https://t.me/${bot.username.substring(1)}`}
+          href={`/dash/bot/${bot.id}`}
           className="flex text-md font-medium items-center hover:underline group capitalize"
-          target="_blank"
         >
           <span>{bot.displayName}</span>
           <ArrowUpRightIcon className="h-5 opacity-0 group-hover:opacity-100 transition-opacity" />

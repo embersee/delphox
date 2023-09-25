@@ -11,14 +11,6 @@ import {
 
 import { TRPCError } from "@trpc/server";
 
-interface User {
-  name?: string | null | undefined;
-  email?: string | null | undefined;
-  image?: string | null | undefined;
-  id: string;
-  username: string;
-}
-
 export const createCommand = async (command: NewCommandParams) => {
   const newCommand = insertCommandSchema.parse({ ...command });
 

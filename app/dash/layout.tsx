@@ -11,7 +11,7 @@ export default async function DashLayout({
   return (
     <>
       <DashNav />
-      <main>{children}</main>
+      <section className="m-4">{children}</section>
     </>
   );
 }
