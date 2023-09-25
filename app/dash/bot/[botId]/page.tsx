@@ -1,4 +1,3 @@
-import Heading from "@/components/ui/heading";
 import { getBotById } from "@/lib/api/bots/queries";
 
 import { redirect } from "next/navigation";
@@ -6,7 +5,6 @@ import { redirect } from "next/navigation";
 export default async function BotPage({
   params,
 }: {
-  children: React.ReactNode;
   params: { botId: string };
 }) {
   const { bot } = await getBotById(params.botId);
