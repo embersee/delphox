@@ -32,7 +32,7 @@ export default function RootLayout({
               {children}
               <Toaster />
               <Background />
-              <Mask />
+              {/* <Mask /> */}
               <TailwindIndicator />
             </ThemeProvider>
           </TrpcProvider>

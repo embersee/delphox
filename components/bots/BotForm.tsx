@@ -237,7 +237,7 @@ const BotForm = ({
           )}
         </div>
 
-        <div className="pt-4 pr-4 border-t-2 border-dashed flex items-center justify-end space-x-4">
+        <div className="py-4 pr-4 border-t-2 border-dashed flex items-center justify-end space-x-4">
           <Button
             type="button"
             variant="ghost"

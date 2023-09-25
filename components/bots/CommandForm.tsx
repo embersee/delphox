@@ -166,7 +166,7 @@ const CommandForm = ({
       <form
         ref={animationParent}
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-4 grow flex flex-col justify-start"
+        className="space-y-4 grow flex flex-col"
         autoComplete="off"
       >
         {fields.map((field, index) => {
@@ -180,7 +180,7 @@ const CommandForm = ({
                     <FormLabel>Command name: </FormLabel>
                     <FormControl>
                       <Input
-                        className="w-[300px]"
+                        className="w-[250px]"
                         autoComplete="off"
                         placeholder="e.g. /start, /catalog, /help etc."
                         {...field}
@@ -234,24 +234,24 @@ const CommandForm = ({
           );
         })}
 
-        <div className="grow">
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() =>
-              append({
-                id: "",
-                command: "",
-                content: "",
-                botId: botId,
-              })
-            }
-          >
-            Create new command
-          </Button>
-        </div>
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={() =>
+            append({
+              id: "",
+              command: "",
+              content: "",
+              botId: botId,
+            })
+          }
+        >
+          Create new command
+        </Button>
 
-        <div className=" pt-4 pr-4 border-t-2 border-dashed flex items-center justify-end space-x-4">
+        <div className="grow"></div>
+
+        <div className=" py-4 pr-4 border-t-2 border-dashed flex items-center justify-end space-x-4">
           <Button
             type="button"
             variant="ghost"
