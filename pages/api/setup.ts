@@ -1,16 +1,20 @@
+import { NextApiRequest, NextApiResponse } from "next";
+
 import { env } from "@/lib/env.mjs";
-import { NextApiResponse } from "next";
-import { NextRequest } from "next/server";
+
 import { db } from "@/lib/db";
-import { getURL } from "vercel-grammy";
 import { Bot } from "grammy";
 
-export async function POST(res: NextApiResponse, req: NextRequest) {
-  const { message } = await req.json();
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { message } = await req.body;
 
   console.log(message);
 
-  if (message !== env.WEBHOOK_SECRET) return res.status(418);
+  if (message !== env.WEBHOOK_SECRET)
+    return res.status(418).json({ "I'm a": "teapot" });
 
   const setUp = async () => {
     console.info("Pulling telegram tokens for webhooks setup...\n");
@@ -20,13 +24,12 @@ export async function POST(res: NextApiResponse, req: NextRequest) {
       },
     });
 
-    if (tokens.length) {
-      console.info("...Found tokens to attack to webhooks...\n");
-    }
+    if (!tokens.length) return res.status(418).json({ "I'm a": "teapot" });
+    console.info("...Found tokens to attack to webhooks...\n");
 
     tokens?.forEach(async (t) => {
       // Webhook URL generation
-      const url = getURL({ path: `api/bot/${t.botToken}` });
+      const url = `${env.VERCEL_URL}/api/bot/${t.botToken}`;
 
       // Webhook setup options
       const options = { secret_token: env.WEBHOOK_SECRET };
@@ -44,5 +47,7 @@ export async function POST(res: NextApiResponse, req: NextRequest) {
     console.info("Setup complete!");
   };
 
-  setUp().then(() => res.status(200));
+  setUp();
+
+  res.status(200).json({ status: "200" });
 }
