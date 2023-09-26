@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "sh scripts/start-tunnel.sh && next dev && sh scripts/stop-tunnel.sh",
-    "build": "prisma generate && next build && sh scripts/set-webhook.sh",
+    "build": "prisma generate && next build && npx tsx scripts/set-webhook.ts",
     "start": "next start",
     "lint": "next lint"
   },
@@ -52,6 +52,7 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
     "vaul": "^0.6.5",
+    "vercel-grammy": "^0.2.1",
     "zod": "^3.22.2",
     "zustand": "^4.4.1"
   },
