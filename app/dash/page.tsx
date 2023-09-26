@@ -3,7 +3,7 @@ import { CreateProjectVale } from "@/components/bots/Vale";
 import BotList from "@/components/bots/BotList";
 
 import Heading from "@/components/ui/heading";
-import { getBots, getBotsWithCommands } from "@/lib/api/bots/queries";
+import { getBotsWithCommands } from "@/lib/api/bots/queries";
 
 export default async function Dash() {
   const { bots: bots } = await getBotsWithCommands();

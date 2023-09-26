@@ -3,11 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "prisma generate && next build",
+    "dev": "sh scripts/start-tunnel.sh && next dev && sh scripts/stop-tunnel.sh",
+    "build": "prisma generate && next build && sh scripts/set-webhook.sh",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "prisma generate"
+    "lint": "next lint"
   },
   "dependencies": {
     "@auth/core": "^0.15.0",
@@ -32,14 +31,15 @@
     "@trpc/react-query": "^10.38.3",
     "@trpc/server": "^10.38.3",
     "@types/node": "20.6.0",
-    "@types/react": "18.2.21",
+    "@types/react": "^18.2.21",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "eslint-config-next": "^13.5.1",
+    "grammy": "^1.19.0",
     "lucide-react": "^0.279.0",
-    "next": "^13.5.1",
+    "next": "^13.5.3",
     "next-auth": "^4.23.1",
     "next-themes": "^0.2.1",
     "postcss": "8.4.29",

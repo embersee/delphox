@@ -21,7 +21,7 @@ export const getBotsWithCommands = async () => {
       userId: session?.user.id!,
     },
     include: {
-      command: true,
+      Command: true,
     },
   });
 

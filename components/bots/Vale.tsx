@@ -11,7 +11,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { ButtonHTMLAttributes } from "react";
 import { create } from "zustand";
 import BotForm from "./BotForm";
-import { CompleteBot, CompleteBotWithCommands } from "@/lib/db/schema/bot";
+import { CompleteBotWithCommands } from "@/lib/db/schema/bot";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
 import CommandForm from "./CommandForm";
@@ -43,7 +43,7 @@ export function CreateProjectVale() {
 
   const editing = !!bot?.id;
 
-  const existingCommands = bot?.command;
+  const existingCommands = bot?.Command;
 
   const cleanUp = () => {
     setBot(undefined), openCommands(false);

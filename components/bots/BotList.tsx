@@ -71,7 +71,7 @@ const Bot = ({ bot }: { bot: CompleteBotWithCommands }) => {
           >
             <ChevronRightSquare className=" h-4 w-4" />
             <span>Commands</span>
-            <span>{bot.command.length > 0 && bot.command.length}</span>
+            <span>{bot.Command.length > 0 && bot.Command.length}</span>
           </Button>
           <Button
             variant="secondary"
