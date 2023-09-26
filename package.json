@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "sh scripts/start-tunnel.sh && next dev && sh scripts/stop-tunnel.sh",
-    "build": "prisma generate && next build && npx tsx scripts/set-webhook.ts",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint"
   },
