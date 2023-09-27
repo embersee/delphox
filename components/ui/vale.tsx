@@ -23,7 +23,7 @@ const ValeContent = React.forwardRef<
       className={cn(
         ((className =
           "fixed bottom-0 left-0 right-0 top-0 z-[200] flex transform-gpu flex-col rounded-t-lg border bg-background p-3 md:top-auto"),
-        className)
+        className),
       )}
       {...props}
     >
@@ -42,7 +42,7 @@ const ValeIcon = React.forwardRef<
     ref={ref}
     className={cn(
       "mx-auto mb-8 h-1 w-32 flex-shrink-0 rounded-full bg-muted-foreground",
-      className
+      className,
     )}
     {...props}
   />
@@ -58,7 +58,7 @@ const ValeTitle = React.forwardRef<
     ref={ref}
     className={cn(
       "text-2xl font-semibold leading-none tracking-tight",
-      className
+      className,
     )}
     {...props}
   />

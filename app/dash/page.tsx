@@ -9,8 +9,11 @@ export default async function Dash() {
   const { bots: bots } = await getBotsWithCommands();
 
   return (
-    <section className="main">
-      <Heading title="My Bots" description="Manage your bots here.">
+    <>
+      <Heading
+        title="My Bots"
+        description="Create or select which bot to manage here."
+      >
         {bots.length ? <CreateBotButton /> : null}
       </Heading>
 
@@ -29,6 +32,6 @@ export default async function Dash() {
       )}
 
       <CreateProjectVale />
-    </section>
+    </>
   );
 }

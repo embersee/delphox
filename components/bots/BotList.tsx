@@ -43,17 +43,17 @@ const Bot = ({ bot }: { bot: CompleteBotWithCommands }) => {
   };
 
   return (
-    <li className="flex justify-between items-center p-2 pl-4 rounded-md bg-secondary/30 hover:bg-secondary/60 transition-colors">
-      <div className="w-full flex items-center justify-between space-x-4">
+    <li className="flex items-center justify-between rounded-md bg-secondary/30 p-2 pl-4 transition-colors hover:bg-secondary/60">
+      <div className="flex w-full items-center justify-between space-x-4">
         <Link
           href={`/dash/bot/${bot.id}`}
-          className="flex text-md font-medium items-center hover:underline group capitalize"
+          className="text-md group flex items-center font-medium capitalize hover:underline"
         >
           <span>{bot.displayName}</span>
-          <ArrowUpRightIcon className="h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <ArrowUpRightIcon className="h-5 opacity-0 transition-opacity group-hover:opacity-100" />
         </Link>
 
-        <div className="space-x-4 self-end flex items-center">
+        <div className="flex items-center space-x-4 self-end">
           {bot.active ? (
             <Badge variant="outline" className=" border-green-300">
               Active
@@ -65,7 +65,7 @@ const Bot = ({ bot }: { bot: CompleteBotWithCommands }) => {
           )}
 
           <Button
-            variant="secondary"
+            variant="ghost"
             className="space-x-2"
             onClick={() => editCommands()}
           >
@@ -74,7 +74,7 @@ const Bot = ({ bot }: { bot: CompleteBotWithCommands }) => {
             <span>{bot.Command.length > 0 && bot.Command.length}</span>
           </Button>
           <Button
-            variant="secondary"
+            variant="ghost"
             className="space-x-2"
             onClick={() => editBot()}
           >

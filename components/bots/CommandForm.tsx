@@ -32,7 +32,7 @@ const validationSchema = z.object({
       command: z.string().min(1).max(32),
       content: z.string().min(1).max(4096),
       botId: z.string(),
-    })
+    }),
   ),
 });
 
@@ -43,7 +43,7 @@ type UpdateCommand = z.infer<typeof commandSchema>;
 function useZodForm<TSchema extends z.ZodType>(
   props: Omit<UseFormProps<TSchema["_input"]>, "resolver"> & {
     schema: TSchema;
-  }
+  },
 ) {
   const form = useForm<TSchema["_input"]>({
     ...props,
@@ -166,7 +166,7 @@ const CommandForm = ({
       <form
         ref={animationParent}
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-4 grow flex flex-col"
+        className="flex grow flex-col space-y-4"
         autoComplete="off"
       >
         {fields.map((field, index) => {
@@ -216,7 +216,7 @@ const CommandForm = ({
                 <Button
                   type="button"
                   variant="destructive"
-                  className="self-center mt-2"
+                  className="mt-2 self-center"
                   onClick={() => removeCommand(index, commands.at(index)?.id)}
                 >
                   Delete
@@ -224,7 +224,7 @@ const CommandForm = ({
               ) : (
                 <Button
                   type="button"
-                  className="self-center mt-2"
+                  className="mt-2 self-center"
                   onClick={() => removeCommand(index, commands.at(index)?.id)}
                 >
                   Remove
@@ -251,7 +251,7 @@ const CommandForm = ({
 
         <div className="grow"></div>
 
-        <div className=" py-4 pr-4 border-t-2 border-dashed flex items-center justify-end space-x-4">
+        <div className=" flex items-center justify-end space-x-4 border-t-2 border-dashed py-4 pr-4">
           <Button
             type="button"
             variant="ghost"

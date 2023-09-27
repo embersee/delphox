@@ -1,5 +1,6 @@
 import { Bot, webhookCallback } from "grammy";
 import { NextApiRequest, NextApiResponse } from "next";
+import { db } from "@/lib/db";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const botToken = req.url?.split("/").pop(); // Получаем токен из URL
@@ -8,7 +9,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const bot = new Bot(botToken);
 
-  const commands = await db?.command.findMany({
+  const commands = await db.command.findMany({
     where: {
       Bot: {
         botToken: botToken,

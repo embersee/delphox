@@ -59,7 +59,7 @@ export function CreateProjectVale() {
         <ValeIcon />
 
         <div className="h-[calc(100vh-7rem)] overflow-y-auto">
-          <div className=" h-full flex flex-col space-y-1 mx-auto max-w-2xl ">
+          <div className=" mx-auto flex h-full max-w-2xl flex-col space-y-1 ">
             <div className="py-8">
               <ValeTitle className="flex items-center justify-between gap-2 ">
                 {editing ? "Edit" : "Create"} {commands ? "Commands" : "Bot"}

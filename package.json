@@ -57,6 +57,7 @@
   },
   "devDependencies": {
     "dotenv": "^16.3.1",
+    "prettier-plugin-tailwindcss": "^0.5.4",
     "prisma": "^5.3.1",
     "tsx": "^3.12.10"
   }

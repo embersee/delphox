@@ -12,8 +12,8 @@ export default async function BotPage({
   if (!bot) return redirect("/dash");
 
   return (
-    <div className="flex ">
-      <div className="main">{JSON.stringify(bot, null, 4)}</div>
-    </div>
+    <>
+      <div>{JSON.stringify(bot, null, 4)}</div>
+    </>
   );
 }

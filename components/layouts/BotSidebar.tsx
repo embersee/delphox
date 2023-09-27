@@ -16,13 +16,13 @@ export default function BotSidebar({
     <section className="space-y-4">
       <Button
         variant="ghost"
-        className="space-x-1 flex items-center"
+        className="flex items-center space-x-1"
         onClick={() => router.back()}
       >
         <ArrowLeft className="h-3 w-3" />
         <span>Back</span>
       </Button>
-      <div className="flex flex-col nav space-y-4 p-4 h-full w-56">
+      <div className="nav flex h-full w-56 flex-col space-y-4 p-4">
         <div>
           <h2>{username}</h2>
         </div>

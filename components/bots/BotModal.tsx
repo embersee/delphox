@@ -59,7 +59,7 @@ export default function BotModal({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="px-5 pt-5">
-          <DialogTitle className="flex justify-between items-center">
+          <DialogTitle className="flex items-center justify-between">
             {editing ? "Edit" : "Create"} Bot
             <div className="flex items-center gap-2">
               {bot?.active ? (

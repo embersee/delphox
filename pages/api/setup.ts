@@ -1,13 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
-
 import { env } from "@/lib/env.mjs";
-
 import { db } from "@/lib/db";
 import { Bot } from "grammy";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const { message } = await req.body;
 

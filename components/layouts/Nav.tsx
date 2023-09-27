@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 
 export default function Nav() {
   return (
-    <nav className="flex h-16 justify-between items-center px-10">
+    <nav className="flex h-16 items-center justify-between px-10">
       <Link href="/">
         <Button variant="ghost" className="text-xl">
           Delphox

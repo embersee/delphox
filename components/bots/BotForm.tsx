@@ -115,9 +115,9 @@ const BotForm = ({
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
         autoComplete="off"
-        className="grow flex flex-col justify-start"
+        className="flex grow flex-col justify-start"
       >
-        <div className="space-y-6 grow">
+        <div className="grow space-y-6">
           <FormField
             control={form.control}
             name="displayName"
@@ -237,7 +237,7 @@ const BotForm = ({
           )}
         </div>
 
-        <div className="py-4 pr-4 border-t-2 border-dashed flex items-center justify-end space-x-4">
+        <div className="flex items-center justify-end space-x-4 border-t-2 border-dashed py-4 pr-4">
           <Button
             type="button"
             variant="ghost"

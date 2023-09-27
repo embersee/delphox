@@ -8,7 +8,7 @@ export default function CreateBotButton() {
   return (
     <CreateProjectValeTrigger asChild>
       <Button variant="highlight" size="lg">
-        <PlusCircleIcon className="h-4 mr-1" />
+        <PlusCircleIcon className="mr-1 h-4" />
         <span>Create Bot</span>
       </Button>
     </CreateProjectValeTrigger>

@@ -9,7 +9,7 @@ export default async function DashNav() {
   const { session } = await getUserAuth();
   if (!session) return null;
   return (
-    <nav className="flex p-2 nav max-w-7xl mx-auto mt-4 justify-between items-center ">
+    <nav className="nav mx-auto mt-4 flex max-w-7xl items-center justify-between p-2 ">
       <div className="flex items-center space-x-2">
         <Link href="/">
           <Button variant="link" className="text-xl decoration-from-font">
@@ -31,7 +31,7 @@ export default async function DashNav() {
         </Link>
       </div>
       {session?.user && (
-        <div className="space-x-2 flex items-center">
+        <div className="flex items-center space-x-2">
           <Profile
             name={session.user.name as string}
             image={session.user.image as string}
