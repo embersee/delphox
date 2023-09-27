@@ -29,7 +29,14 @@ const validationSchema = z.object({
   commands: z.array(
     z.object({
       id: z.string().optional(),
-      command: z.string().min(1).max(32),
+      command: z
+        .string()
+        .min(1)
+        .max(32)
+        .regex(/^[a-z]*$/, {
+          message: "Exclude /, only one word & lowercase alphabet characters!",
+        })
+        .toLowerCase(),
       content: z.string().min(1).max(4096),
       botId: z.string(),
     }),

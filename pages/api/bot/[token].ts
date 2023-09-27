@@ -1,11 +1,16 @@
 import { Bot, webhookCallback } from "grammy";
 import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/lib/db";
+import { env } from "@/lib/env.mjs";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const botToken = req.url?.split("/").pop(); // Получаем токен из URL
 
-  if (!botToken) return res.send(400);
+  if (!botToken) return res.send({ status: 400 });
+
+  const secret = req.headers["x-telegram-bot-api-secret-token"]?.toString();
+
+  if (secret !== env.WEBHOOK_SECRET) return res.send({ status: 400 });
 
   const bot = new Bot(botToken);
 
@@ -15,21 +20,24 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         botToken: botToken,
       },
     },
+    select: {
+      command: true,
+      content: true,
+    },
   });
 
-  console.log(commands);
+  // const info = bot.botInfo;
+  // console.log("info: ", info);
 
   const botUsername = (await bot.api.getMe()).username;
 
-  // Проверяем токен в Redis
-
-  commands?.forEach((c) => {
+  commands.forEach((c) => {
     bot.command(c.command, async (ctx) => {
       await ctx.reply(c.content);
 
-      console.log({
-        using: `${c.command}`,
-        from: ctx.message?.from.username,
+      console.info(`event: `, {
+        using: c.command,
+        from: ctx.update.message?.from.username,
         to: botUsername,
         token: botToken,
       });
@@ -37,5 +45,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   // Используем webhookCallback для обработки запроса
-  return webhookCallback(bot, "next-js")(req, res);
+  return webhookCallback(
+    bot,
+    "next-js",
+    "throw",
+    undefined,
+    env.WEBHOOK_SECRET,
+  )(req, res);
 };
