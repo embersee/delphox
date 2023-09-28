@@ -2,6 +2,7 @@ import { getProduct } from "@/lib/api/products/queries";
 import { z } from "zod";
 
 export const productSchema = z.object({
+  id: z.string(),
   name: z.string(),
   description: z.string(),
   shortDescription: z.string(),
@@ -12,13 +13,17 @@ export const productSchema = z.object({
   priority: z.number().optional(),
 });
 
-export const insertProductSchema = productSchema.extend({
-  storeId: z.string(),
-});
+export const insertProductSchema = productSchema
+  .extend({
+    storeId: z.string(),
+  })
+  .omit({ id: true });
 
-export const insertProductParams = productSchema.extend({
-  storeId: z.string(),
-});
+export const insertProductParams = productSchema
+  .extend({
+    storeId: z.string(),
+  })
+  .omit({ id: true });
 
 export const updateProductSchema = productSchema.extend({
   id: z.string().cuid(),

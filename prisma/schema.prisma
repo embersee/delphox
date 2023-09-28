@@ -174,7 +174,7 @@ model Order {
 
   orderStatus   OrderStatus   @default(CREATED)
   paymentType   PaymentType   @default(TELEGRAM)
-  PaymentStatus PaymentStatus @default(INCOMPLETE)
+  paymentStatus PaymentStatus @default(INCOMPLETE)
 
   Cart Cart @relation(fields: [cartId], references: [id])
   Bot  Bot  @relation(fields: [botId], references: [id])
