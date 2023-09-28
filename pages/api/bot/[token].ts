@@ -6,11 +6,12 @@ import { env } from "@/lib/env.mjs";
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const botToken = req.url?.split("/").pop(); // Получаем токен из URL
 
-  if (!botToken) return res.send({ status: 400 });
+  if (!botToken) return res.status(400).send({ message: "no token recieved." });
 
   const secret = req.headers["x-telegram-bot-api-secret-token"]?.toString();
 
-  if (secret !== env.WEBHOOK_SECRET) return res.send({ status: 400 });
+  if (secret !== env.WEBHOOK_SECRET)
+    return res.status(400).send({ message: "wrong secret recieved." });
 
   const bot = new Bot(botToken);
 
