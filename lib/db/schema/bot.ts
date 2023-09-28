@@ -1,7 +1,7 @@
 import { getBots, getBotsWithCommands } from "@/lib/api/bots/queries";
 import { z } from "zod";
 
-const botSchema = z.object({
+export const botSchema = z.object({
   id: z.string(),
   userId: z.string(),
   username: z.string(),
