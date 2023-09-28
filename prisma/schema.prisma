@@ -77,28 +77,26 @@ model Store {
 }
 
 model Product {
-  id               String        @id @default(cuid())
+  id               String         @id @default(cuid())
   name             String
   description      String
   shortDescription String
   price            Int
   discount         Int?
   stock            Int
-  status           ProductStatus @default(INACTIVE)
+  status           ProductStatus? @default(INACTIVE)
   priority         Int?
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  InCart  Cart?   @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  cartId  String?
   Store   Store?  @relation(fields: [storeId], references: [id])
   storeId String?
 
   Categories Category[]
   Images     Image[]
+  InCart     Cart[]
 
-  @@index([cartId])
   @@index([storeId])
 }
 
