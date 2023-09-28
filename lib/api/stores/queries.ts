@@ -3,11 +3,14 @@ import { getUserAuth } from "@/lib/auth/utils";
 
 export const getStore = async () => {
   const { session } = await getUserAuth();
-  const s = await db.store.findMany({
+  const s = await db.store.findFirst({
     where: {
       Bot: {
         userId: session?.user.id,
       },
+    },
+    include: {
+      Products: true,
     },
   });
 

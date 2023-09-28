@@ -4,13 +4,19 @@ import { z } from "zod";
 export const productSchema = z.object({
   id: z.string(),
   name: z.string(),
-  description: z.string(),
-  shortDescription: z.string(),
-  price: z.number(),
-  discount: z.number().optional(),
-  stock: z.number(),
-  status: z.enum(["ACTIVE", "INACTIVE", "ARCHIVED"]),
-  priority: z.number().optional(),
+  description: z.string().optional(),
+  shortDescription: z.string().optional(),
+  price: z.coerce.number().min(100),
+  discount: z.coerce.number().optional(),
+  stock: z.coerce.number().min(1),
+  status: z
+    .enum(["ACTIVE", "INACTIVE", "ARCHIVED"])
+    .optional()
+    .default("INACTIVE"),
+  priority: z.coerce.number().optional(),
+
+  // Categories: z.array(categorySchema).optional(),
+  // Images: z.array(imageSchema).optional(),
 });
 
 export const insertProductSchema = productSchema

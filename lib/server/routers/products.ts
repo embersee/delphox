@@ -10,6 +10,9 @@ import {
   updateProduct,
   deleteProduct,
 } from "@/lib/api/products/mutations";
+import { insertImageParams } from "@/lib/db/schema/image";
+import { insertCategoryParams } from "@/lib/db/schema/category";
+import { z } from "zod";
 
 export const productRouter = router({
   getProduct: protectedProcedure.query(async () => {
@@ -23,7 +26,13 @@ export const productRouter = router({
     }),
 
   createProduct: protectedProcedure
-    .input(insertProductParams)
+    .input(
+      z.object({
+        product: insertProductParams,
+        images: insertImageParams.array().optional(),
+        categories: insertCategoryParams.array().optional(),
+      }),
+    )
     .mutation(async ({ input }) => {
       return createProduct(input);
     }),

@@ -13,7 +13,7 @@ export const insertStoreSchema = storeSchema.extend({
 
 export const insertStoreParams = storeSchema.extend({
   name: z.string(),
-  description: z.string(),
+  description: z.string().optional(),
   botId: z.string(),
 });
 
@@ -33,9 +33,7 @@ export type UpdateStoreParams = z.infer<typeof updateStoreParams>;
 export type StoreId = z.infer<typeof storeIdSchema>["id"];
 
 // this type infers the return from getBots() - meaning it will include any joins
-export type CompleteStore = Awaited<
-  ReturnType<typeof getStore>
->["store"][number];
+export type CompleteStore = Awaited<ReturnType<typeof getStore>>["store"];
 
 export type PartialCompleteStore = Partial<
   Awaited<ReturnType<typeof getStore>>

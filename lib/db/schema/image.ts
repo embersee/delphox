@@ -2,18 +2,23 @@ import { getImage } from "@/lib/api/images/queries";
 import { z } from "zod";
 
 export const imageSchema = z.object({
+  id: z.string(),
   name: z.string(),
   url: z.string(),
   priority: z.string().optional(),
 });
 
-export const insertImageSchema = imageSchema.extend({
-  productId: z.string(),
-});
+export const insertImageSchema = imageSchema
+  .extend({
+    productId: z.string(),
+  })
+  .omit({ id: true });
 
-export const insertImageParams = imageSchema.extend({
-  productId: z.string(),
-});
+export const insertImageParams = imageSchema
+  .extend({
+    productId: z.string(),
+  })
+  .omit({ id: true });
 
 export const updateImageSchema = imageSchema.extend({
   id: z.string().cuid(),

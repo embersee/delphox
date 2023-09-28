@@ -17,9 +17,9 @@ export default async function BotLayout({
   if (!bot) return redirect("/dash");
 
   return (
-    <div className="mx-auto flex max-w-7xl">
+    <div className="flex max-w-7xl">
       <BotSidebar username={bot?.username} botId={bot?.id} />
-      <main>{children}</main>
+      <div className="flex w-full flex-col p-4">{children}</div>
     </div>
   );
 }

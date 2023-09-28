@@ -37,6 +37,13 @@ export const getBotById = async (id: BotId) => {
       id: botId,
       userId: session?.user.id!,
     },
+    include: {
+      Store: {
+        include: {
+          Products: true,
+        },
+      },
+    },
   });
 
   return { bot: b };

@@ -1,4 +1,9 @@
 import { db } from "@/lib/db";
+import {
+  NewCategoryParams,
+  insertCategorySchema,
+} from "@/lib/db/schema/category";
+import { NewImageParams, insertImageSchema } from "@/lib/db/schema/image";
 
 import {
   ProductId,
@@ -11,11 +16,74 @@ import {
 
 import { TRPCError } from "@trpc/server";
 
-export const createProduct = async (product: NewProductParams) => {
+export const createProduct = async ({
+  product,
+  categories,
+  images,
+}: {
+  product: NewProductParams;
+  categories?: NewCategoryParams[];
+  images?: NewImageParams[];
+}) => {
   const newProduct = insertProductSchema.parse({ ...product });
+  const NewCategory = insertCategorySchema.optional().parse({ ...categories });
+  const newImage = insertImageSchema.optional().parse({ ...images });
 
   try {
-    await db.product.create({
+    if (newImage && NewCategory)
+      return await db.product.create({
+        data: {
+          ...newProduct,
+          Images: {
+            createMany: {
+              data: newImage,
+            },
+          },
+          Categories: {
+            createMany: {
+              data: NewCategory,
+            },
+          },
+        },
+        include: {
+          Images: true,
+          Categories: true,
+        },
+      });
+
+    if (!newImage && NewCategory)
+      return await db.product.create({
+        data: {
+          ...newProduct,
+
+          Categories: {
+            createMany: {
+              data: NewCategory,
+            },
+          },
+        },
+        include: {
+          Categories: true,
+        },
+      });
+
+    if (newImage && !NewCategory)
+      return await db.product.create({
+        data: {
+          ...newProduct,
+
+          Images: {
+            createMany: {
+              data: newImage,
+            },
+          },
+        },
+        include: {
+          Images: true,
+        },
+      });
+
+    return await db.product.create({
       data: newProduct,
     });
 

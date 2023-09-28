@@ -184,7 +184,7 @@ const CommandForm = ({
                 name={`commands.${index}.command` as const}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Command name: </FormLabel>
+                    <FormLabel>Command: </FormLabel>
                     <FormControl>
                       <Input
                         className="w-[250px]"
