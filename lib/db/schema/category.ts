@@ -2,27 +2,20 @@ import { getCategoryByBot } from "@/lib/api/categories/queries";
 import { z } from "zod";
 
 export const categorySchema = z.object({
-  id: z.string(),
   name: z.string(),
   productId: z.string().optional(),
   storeId: z.string().optional(),
 });
 
-export const insertCategorySchema = categorySchema
-  .extend({ storeId: z.string() })
-  .omit({
-    id: true,
-  });
+export const insertCategorySchema = categorySchema.extend({
+  storeId: z.string(),
+});
 
-export const insertCategoryParams = categorySchema
-  .extend({
-    name: z.string(),
-    productId: z.string(),
-    storeId: z.string(),
-  })
-  .omit({
-    id: true,
-  });
+export const insertCategoryParams = categorySchema.extend({
+  name: z.string(),
+  productId: z.string(),
+  storeId: z.string(),
+});
 
 export const updateCategorySchema = categorySchema.extend({
   id: z.string().cuid(),

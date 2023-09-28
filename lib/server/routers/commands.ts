@@ -23,16 +23,19 @@ export const commandsRouter = router({
     .query(async ({ input }) => {
       return getCommandsById(input.id);
     }),
+
   createCommand: protectedProcedure
     .input(insertCommandParams)
     .mutation(async ({ input }) => {
       return createCommand(input);
     }),
+
   updateCommand: protectedProcedure
     .input(updateCommandParams)
     .mutation(async ({ input }) => {
       return updateCommand(input.id, input);
     }),
+
   deleteCommand: protectedProcedure
     .input(commandIdSchema)
     .mutation(async ({ input }) => {

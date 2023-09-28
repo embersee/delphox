@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { env } from "@/lib/env.mjs";
 import { db } from "@/lib/db";
 import { Bot } from "grammy";
-import { WebhookInfo } from "grammy/types";
 
 export default async function handler(
   req: NextApiRequest,

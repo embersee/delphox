@@ -68,12 +68,12 @@ model Store {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  Bot        Bot        @relation(fields: [botId], references: [id], onDelete: Cascade)
-  botId      String     @unique
+  Bot   Bot    @relation(fields: [botId], references: [id], onDelete: Cascade)
+  botId String @unique
+
   Cart       Cart[]
   Categories Category[]
-
-  Products Product[]
+  Products   Product[]
 }
 
 model Product {
@@ -90,12 +90,13 @@ model Product {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
+  InCart  Cart?   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId  String?
+  Store   Store?  @relation(fields: [storeId], references: [id])
+  storeId String?
+
   Categories Category[]
   Images     Image[]
-  InCart     Cart?      @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  cartId     String?
-  Store      Store?     @relation(fields: [storeId], references: [id])
-  storeId    String?
 
   @@index([cartId])
   @@index([storeId])
@@ -137,18 +138,17 @@ model Image {
 model Cart {
   id String @id @default(cuid())
 
-  Customer Customer @relation(fields: [customerTelegramId], references: [telegramId])
-
-  customerTelegramId String @unique
-
-  ProductsInCart Product[]
-
-  StoreCart Store @relation(fields: [storeId], references: [id])
-
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
+  Customer           Customer @relation(fields: [customerTelegramId], references: [telegramId])
+  customerTelegramId String   @unique
+
+  StoreCart Store  @relation(fields: [storeId], references: [id])
   storeId   String
+
+  ProductsInCart Product[]
+
   OrderCart Order?
 
   @@index([customerTelegramId])
@@ -171,15 +171,15 @@ model Order {
   phonenumber String?
   totalSum    Int
 
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
   orderStatus   OrderStatus   @default(CREATED)
-  paymentType   PaymentType
+  paymentType   PaymentType   @default(TELEGRAM)
   PaymentStatus PaymentStatus @default(INCOMPLETE)
 
   Cart Cart @relation(fields: [cartId], references: [id])
   Bot  Bot  @relation(fields: [botId], references: [id])
-
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
 
   cartId String @unique
   botId  String

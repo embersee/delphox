@@ -15,22 +15,27 @@ export const botsRouter = router({
   getBots: protectedProcedure.query(async () => {
     return getBots();
   }),
+
   getBotsWithCommands: protectedProcedure.query(async () => {
     return getBotsWithCommands();
   }),
+
   getBotById: publicProcedure.input(botIdSchema).query(async ({ input }) => {
     return getBotById(input.id);
   }),
+
   createBot: protectedProcedure
     .input(insertBotParams)
     .mutation(async ({ input, ctx }) => {
       return createBot(input, ctx.user);
     }),
+
   updateBot: protectedProcedure
     .input(updateBotParams)
     .mutation(async ({ input, ctx }) => {
       return updateBot(input.id, input, ctx.user);
     }),
+
   deleteBot: protectedProcedure
     .input(botIdSchema)
     .mutation(async ({ input, ctx }) => {
