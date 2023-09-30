@@ -10,15 +10,15 @@ export const categorySchema = z.object({
 
 export const insertCategorySchema = categorySchema
   .extend({
-    storeId: z.string(),
+    // storeId: z.string(),
   })
   .omit({ id: true });
 
 export const insertCategoryParams = categorySchema
   .extend({
     name: z.string(),
-    productId: z.string(),
-    storeId: z.string(),
+    // productId: z.string(),
+    // storeId: z.string(),
   })
   .omit({ id: true });
 

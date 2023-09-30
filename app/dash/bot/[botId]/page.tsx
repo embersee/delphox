@@ -35,9 +35,7 @@ export default async function BotPage({
             title="My Store"
             description="Create or manage products here."
           >
-            {!bot.Store.Products.length && (
-              <CreateProductButton storeId={bot.Store.id} />
-            )}
+            <CreateProductButton storeId={bot.Store.id} />
           </Heading>
 
           <ProductList store={bot.Store} />

@@ -25,13 +25,14 @@ export const createProduct = async ({
   categories?: NewCategoryParams[];
   images?: NewImageParams[];
 }) => {
+  console.log("here 3");
   const newProduct = insertProductSchema.parse({ ...product });
   const NewCategory = insertCategorySchema.optional().parse({ ...categories });
   const newImage = insertImageSchema.optional().parse({ ...images });
 
   try {
-    if (newImage && NewCategory)
-      return await db.product.create({
+    if (newImage && NewCategory) {
+      await db.product.create({
         data: {
           ...newProduct,
           Images: {
@@ -50,9 +51,11 @@ export const createProduct = async ({
           Categories: true,
         },
       });
+      return { success: true };
+    }
 
-    if (!newImage && NewCategory)
-      return await db.product.create({
+    if (!newImage && NewCategory) {
+      await db.product.create({
         data: {
           ...newProduct,
 
@@ -66,9 +69,10 @@ export const createProduct = async ({
           Categories: true,
         },
       });
-
-    if (newImage && !NewCategory)
-      return await db.product.create({
+      return { success: true };
+    }
+    if (newImage && !NewCategory) {
+      await db.product.create({
         data: {
           ...newProduct,
 
@@ -82,8 +86,9 @@ export const createProduct = async ({
           Images: true,
         },
       });
-
-    return await db.product.create({
+      return { success: true };
+    }
+    await db.product.create({
       data: newProduct,
     });
 

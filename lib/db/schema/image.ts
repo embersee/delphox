@@ -10,7 +10,7 @@ export const imageSchema = z.object({
 
 export const insertImageSchema = imageSchema
   .extend({
-    productId: z.string(),
+    // productId: z.string(),
   })
   .omit({ id: true });
 

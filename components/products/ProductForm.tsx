@@ -21,12 +21,14 @@ import { useToast } from "@/components/ui/use-toast";
 import { PlusCircleIcon, X } from "lucide-react";
 
 import {
+  NewProduct,
+  NewProductParams,
   insertProductParams,
   insertProductSchema,
 } from "@/lib/db/schema/product";
 import { StoreId } from "@/lib/db/schema/store";
 import { insertImageParams } from "@/lib/db/schema/image";
-import { insertCategoryParams } from "@/lib/db/schema/category";
+import { NewCategory, insertCategoryParams } from "@/lib/db/schema/category";
 
 const ProductForm = ({
   storeId,
@@ -91,9 +93,10 @@ const ProductForm = ({
       onError: (error) => onError(error.message),
     });
 
-  const handleSubmit = (values: any) => {
-    console.log(values);
-    // createProduct(values);
+  const handleSubmit = (product: NewProductParams) => {
+    console.log(JSON.stringify(product, null, 4));
+    console.log("here2");
+    createProduct({ product: product });
   };
   return (
     <Form {...form}>
@@ -131,7 +134,9 @@ const ProductForm = ({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description</FormLabel>
+                <FormLabel>
+                  Description <span className="text-red-700">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -151,7 +156,9 @@ const ProductForm = ({
             name="shortDescription"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Short description</FormLabel>
+                <FormLabel>
+                  Short description <span className="text-red-700">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -171,7 +178,9 @@ const ProductForm = ({
             name="price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Price</FormLabel>
+                <FormLabel>
+                  Price <span className="text-red-700">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -213,7 +222,9 @@ const ProductForm = ({
             name="stock"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Stock</FormLabel>
+                <FormLabel>
+                  Stock <span className="text-red-700">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}

@@ -1,11 +1,13 @@
 import { getProduct } from "@/lib/api/products/queries";
 import { z } from "zod";
+import { insertImageParams } from "./image";
+import { insertCategoryParams } from "./category";
 
 export const productSchema = z.object({
   id: z.string(),
   name: z.string(),
-  description: z.string().optional(),
-  shortDescription: z.string().optional(),
+  description: z.string().min(1),
+  shortDescription: z.string().min(1),
   price: z.coerce.number().min(100),
   discount: z.coerce.number().optional(),
   stock: z.coerce.number().min(1),
@@ -21,13 +23,13 @@ export const productSchema = z.object({
 
 export const insertProductSchema = productSchema
   .extend({
-    storeId: z.string(),
+    storeId: z.string().cuid(),
   })
   .omit({ id: true });
 
 export const insertProductParams = productSchema
   .extend({
-    storeId: z.string(),
+    storeId: z.string().cuid(),
   })
   .omit({ id: true });
 
@@ -54,3 +56,11 @@ export type CompleteProduct = Awaited<
 export type PartialCompleteProduct = Partial<
   Awaited<ReturnType<typeof getProduct>>
 >["product"];
+
+export const createProductSchema = z.object({
+  product: insertProductParams,
+  // images: z.array(insertImageParams).optional(),
+  // categories: z.array(insertCategoryParams).optional(),
+});
+
+export type CreateNewProduct = z.infer<typeof createProductSchema>;
