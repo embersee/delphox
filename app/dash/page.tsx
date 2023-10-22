@@ -7,7 +7,6 @@ import { api } from "@/trpc/server";
 
 export default async function Dash() {
   const { bots } = await api.bots.getBotsWithCommands.query();
-  console.log("here 0");
 
   return (
     <>

@@ -43,7 +43,6 @@ export const botsRouter = createTRPCRouter({
 
   getBotsWithCommands: protectedProcedure.query(
     async ({ ctx: { session } }) => {
-      console.log("here 1");
       const b = await db.bot.findMany({
         where: {
           userId: session.user.id,
@@ -52,7 +51,7 @@ export const botsRouter = createTRPCRouter({
           Command: true,
         },
       });
-      console.log("here 2");
+
       return { bots: b };
     },
   ),

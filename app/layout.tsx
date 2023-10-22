@@ -26,11 +26,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <TRPCReactProvider headers={headers()}>
-          {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem> */}
-          {children}
-          {/* <Toaster />
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+            <Toaster />
             <TailwindIndicator />
-          </ThemeProvider> */}
+          </ThemeProvider>
         </TRPCReactProvider>
       </body>
     </html>
