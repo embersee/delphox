@@ -1,22 +1,23 @@
 "use client";
 
-import { CompleteBot, CompleteBotWithCommands } from "@/server/schema/bot";
-import { trpc } from "@/lib/trpc/client";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "../ui/button";
 
 import Link from "next/link";
 
 import { ArrowUpRightIcon, ChevronRightSquare, Settings2 } from "lucide-react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { CompleteStore } from "@/server/schema/store";
-import {
-  CompleteProduct,
-  PartialCompleteProduct,
-} from "@/server/schema/product";
 
-export default function ProductList({ store }: { store: CompleteStore }) {
-  const { data: s } = trpc.stores.getStore.useQuery(undefined, {
+import { Product } from "@/server/schema/product";
+import { api } from "@/trpc/react";
+import { RouterOutputs } from "@/trpc/shared";
+import { NonNullableFields } from "@/server/types";
+
+type fetchedProducts = RouterOutputs["products"]["getProduct"]["product"][0];
+
+export default function ProductList({
+  store,
+}: RouterOutputs["stores"]["getStore"]) {
+  const { data: s } = api.stores.getStore.useQuery(undefined, {
     initialData: { store },
     refetchOnMount: false,
   });
@@ -32,20 +33,7 @@ export default function ProductList({ store }: { store: CompleteStore }) {
   );
 }
 
-const Product = ({ product }: { product: CompleteProduct }) => {
-  // const { setBot, setIsOpen, openCommands } = useValeStore();
-
-  // const editBot = () => {
-  //   setBot(bot);
-  //   setIsOpen(true);
-  // };
-
-  // const editCommands = () => {
-  //   setBot(bot);
-  //   setIsOpen(true);
-  //   openCommands(true);
-  // };
-
+const Product = ({ product }: { product: fetchedProducts }) => {
   return (
     <li className="flex items-center justify-between rounded-md bg-secondary/30 p-2 pl-4 transition-colors hover:bg-secondary/60">
       <div className="flex w-full items-center justify-between space-x-4">

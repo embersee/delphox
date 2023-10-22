@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { trpc } from "@/lib/trpc/client";
+
 import { Button } from "../ui/button";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
@@ -23,6 +23,7 @@ import { PlusCircleIcon, X } from "lucide-react";
 
 import { BotId } from "@/server/schema/bot";
 import { create } from "domain";
+import { api } from "@/trpc/react";
 
 export const StoreSchema = z.object({
   id: z.string().optional(),
@@ -41,7 +42,7 @@ const StoreForm = ({
 }) => {
   const { toast } = useToast();
 
-  const utils = trpc.useContext();
+  const utils = api.useContext();
 
   const form = useForm<z.infer<typeof StoreSchema>>({
     // latest Zod release has introduced a TS error with zodResolver
@@ -77,13 +78,13 @@ const StoreForm = ({
   };
 
   const { mutate: createStore, isLoading: isCreating } =
-    trpc.stores.createStore.useMutation({
+    api.stores.createStore.useMutation({
       onSuccess: () => onSuccess("create"),
       onError: (error) => onError(error.message),
     });
 
   const { mutate: updateStore, isLoading: isUpdating } =
-    trpc.stores.updateStore.useMutation({
+    api.stores.updateStore.useMutation({
       onSuccess: () => onSuccess("update"),
       onError: (error) => onError(error.message),
     });

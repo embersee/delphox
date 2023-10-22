@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { insertImageParams } from "./image";
 import { insertCategoryParams } from "./category";
+import { RouterOutputs } from "@/trpc/shared";
+import { NonNullableFields } from "../types";
 
 export const productSchema = z.object({
   id: z.string(),

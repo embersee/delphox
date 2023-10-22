@@ -8,8 +8,7 @@ import {
   ValeTitle,
 } from "@/components/ui/vale";
 import { create } from "zustand";
-import { BotId } from "@/server/schema/bot";
-import StoreForm from "../store/StoreForm";
+
 import ProductForm from "./ProductForm";
 import { StoreId } from "@/server/schema/store";
 

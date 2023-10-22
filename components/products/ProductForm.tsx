@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { trpc } from "@/lib/trpc/client";
+
 import { Button } from "../ui/button";
 import { z } from "zod";
 import { useToast } from "@/components/ui/use-toast";
@@ -29,6 +29,7 @@ import {
 import { StoreId } from "@/server/schema/store";
 import { insertImageParams } from "@/server/schema/image";
 import { NewCategory, insertCategoryParams } from "@/server/schema/category";
+import { api } from "@/trpc/react";
 
 const ProductForm = ({
   storeId,
@@ -39,7 +40,7 @@ const ProductForm = ({
 }) => {
   const { toast } = useToast();
 
-  const utils = trpc.useContext();
+  const utils = api.useContext();
 
   const form = useForm<z.infer<typeof insertProductParams>>({
     // latest Zod release has introduced a TS error with zodResolver
@@ -82,13 +83,13 @@ const ProductForm = ({
   };
 
   const { mutate: createProduct, isLoading: isCreating } =
-    trpc.products.createProduct.useMutation({
+    api.products.createProduct.useMutation({
       onSuccess: () => onSuccess("create"),
       onError: (error) => onError(error.message),
     });
 
   const { mutate: updateProduct, isLoading: isUpdating } =
-    trpc.products.updateProduct.useMutation({
+    api.products.updateProduct.useMutation({
       onSuccess: () => onSuccess("update"),
       onError: (error) => onError(error.message),
     });
