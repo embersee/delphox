@@ -22,7 +22,6 @@ export const env = createEnv({
         ? z.string()
         : z.string().optional(),
     BOT_TOKEN: z.string().min(1),
-    VERCEL_URL: z.string().min(1),
     NEXTAUTH_URL: z.string().min(1),
     WEBHOOK_SECRET: z.string().min(1),
   },
@@ -46,7 +45,6 @@ export const env = createEnv({
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     BOT_TOKEN: process.env.BOT_TOKEN,
-    VERCEL_URL: process.env.VERCEL_URL,
     WEBHOOK_SECRET: process.env.WEBHOOK_SECRET,
   },
   /**
