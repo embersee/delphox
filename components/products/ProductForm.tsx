@@ -25,10 +25,10 @@ import {
   NewProductParams,
   insertProductParams,
   insertProductSchema,
-} from "@/lib/db/schema/product";
-import { StoreId } from "@/lib/db/schema/store";
-import { insertImageParams } from "@/lib/db/schema/image";
-import { NewCategory, insertCategoryParams } from "@/lib/db/schema/category";
+} from "@/server/schema/product";
+import { StoreId } from "@/server/schema/store";
+import { insertImageParams } from "@/server/schema/image";
+import { NewCategory, insertCategoryParams } from "@/server/schema/category";
 
 const ProductForm = ({
   storeId,

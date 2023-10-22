@@ -1,6 +1,6 @@
 "use client";
 
-import { CompleteBot, CompleteBotWithCommands } from "@/lib/db/schema/bot";
+import { CompleteBot, CompleteBotWithCommands } from "@/server/schema/bot";
 import { trpc } from "@/lib/trpc/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "../ui/button";
@@ -9,11 +9,11 @@ import Link from "next/link";
 
 import { ArrowUpRightIcon, ChevronRightSquare, Settings2 } from "lucide-react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { CompleteStore } from "@/lib/db/schema/store";
+import { CompleteStore } from "@/server/schema/store";
 import {
   CompleteProduct,
   PartialCompleteProduct,
-} from "@/lib/db/schema/product";
+} from "@/server/schema/product";
 
 export default function ProductList({ store }: { store: CompleteStore }) {
   const { data: s } = trpc.stores.getStore.useQuery(undefined, {

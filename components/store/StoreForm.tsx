@@ -21,7 +21,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 import { PlusCircleIcon, X } from "lucide-react";
 
-import { BotId } from "@/lib/db/schema/bot";
+import { BotId } from "@/server/schema/bot";
 import { create } from "domain";
 
 export const StoreSchema = z.object({

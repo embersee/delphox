@@ -3,10 +3,11 @@ import { CreateProjectVale } from "@/components/bots/Vale";
 import BotList from "@/components/bots/BotList";
 
 import Heading from "@/components/ui/heading";
-import { getBotsWithCommands } from "@/lib/api/bots/queries";
+import { api } from "@/trpc/server";
 
 export default async function Dash() {
-  const { bots: bots } = await getBotsWithCommands();
+  const { bots } = await api.bots.getBotsWithCommands.query();
+  console.log("here 0");
 
   return (
     <>

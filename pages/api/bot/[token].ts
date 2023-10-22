@@ -1,7 +1,7 @@
 import { Bot, webhookCallback } from "grammy";
 import { NextApiRequest, NextApiResponse } from "next";
-import { db } from "@/lib/db";
-import { env } from "@/lib/env.mjs";
+import { db } from "@/server/db";
+import { env } from "@/env.mjs";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const botToken = req.url?.split("/").pop(); // Получаем токен из URL

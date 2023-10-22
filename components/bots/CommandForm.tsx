@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { trpc } from "@/lib/trpc/client";
+
 import { Button } from "../ui/button";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
@@ -21,9 +21,10 @@ import { useToast } from "@/components/ui/use-toast";
 
 import { PlusCircleIcon, X } from "lucide-react";
 import { Textarea } from "../ui/textarea";
-import { commandSchema } from "@/lib/db/schema/command";
+import { commandSchema } from "@/server/schema/command";
 
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { api } from "@/trpc/react";
 
 const validationSchema = z.object({
   commands: z.array(
@@ -77,7 +78,7 @@ const CommandForm = ({
   const [animationParent] = useAutoAnimate();
 
   const router = useRouter();
-  const utils = trpc.useContext();
+  const utils = api.useContext();
 
   const form = useZodForm({
     schema: validationSchema,
@@ -122,19 +123,19 @@ const CommandForm = ({
   };
 
   const { mutate: createCommand, isLoading: isCreating } =
-    trpc.commands.createCommand.useMutation({
+    api.commands.createCommand.useMutation({
       onSuccess: () => onSuccess("create"),
       onError: (error) => onError(error.message),
     });
 
   const { mutate: updateCommand, isLoading: isUpdating } =
-    trpc.commands.updateCommand.useMutation({
+    api.commands.updateCommand.useMutation({
       onSuccess: () => onSuccess("update"),
       onError: (error) => onError(error.message),
     });
 
   const { mutate: deleteCommand, isLoading: isDeleting } =
-    trpc.commands.deleteCommand.useMutation({
+    api.commands.deleteCommand.useMutation({
       onSuccess: () => onSuccess("delete"),
       onError: (error) => onError(error.message),
     });

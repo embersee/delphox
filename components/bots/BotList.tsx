@@ -1,7 +1,5 @@
 "use client";
 
-import { CompleteBot, CompleteBotWithCommands } from "@/lib/db/schema/bot";
-import { trpc } from "@/lib/trpc/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "../ui/button";
 
@@ -10,9 +8,15 @@ import { useValeStore } from "./Vale";
 
 import { ArrowUpRightIcon, ChevronRightSquare, Settings2 } from "lucide-react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { api } from "@/trpc/react";
+import { RouterOutputs } from "@/trpc/shared";
+import { NonNullableFields } from "@/server/types";
+import { CompleteBotWithCommands } from "@/server/schema/bot";
 
-export default function BotList({ bots }: { bots: CompleteBotWithCommands[] }) {
-  const { data: b } = trpc.bots.getBotsWithCommands.useQuery(undefined, {
+export default function BotList({
+  bots,
+}: RouterOutputs["bots"]["getBotsWithCommands"]) {
+  const { data: b } = api.bots.getBotsWithCommands.useQuery(undefined, {
     initialData: { bots },
     refetchOnMount: false,
   });
@@ -28,7 +32,7 @@ export default function BotList({ bots }: { bots: CompleteBotWithCommands[] }) {
   );
 }
 
-const Bot = ({ bot }: { bot: CompleteBotWithCommands }) => {
+const Bot = ({ bot }: CompleteBotWithCommands) => {
   const { setBot, setIsOpen, openCommands } = useValeStore();
 
   const editBot = () => {
@@ -49,7 +53,7 @@ const Bot = ({ bot }: { bot: CompleteBotWithCommands }) => {
           href={`/dash/bot/${bot.id}`}
           className="text-md group flex items-center font-medium capitalize hover:underline"
         >
-          <span>{bot.displayName}</span>
+          <span>{bot?.displayName}</span>
           <ArrowUpRightIcon className="h-5 opacity-0 transition-opacity group-hover:opacity-100" />
         </Link>
 

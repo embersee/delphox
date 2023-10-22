@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  CompleteBot,
-  NewBotParams,
-  insertBotParams,
-} from "@/lib/db/schema/bot";
+import { NewBotParams, insertBotParams } from "@/server/schema/bot";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -18,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { trpc } from "@/lib/trpc/client";
+
 import { Button } from "../ui/button";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
@@ -32,12 +28,15 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { PlusCircleIcon, X } from "lucide-react";
+import { RouterOutputs } from "@/trpc/shared";
+import { api } from "@/trpc/react";
+import { NonNullableFields } from "@/server/types";
 
 const BotForm = ({
   bot,
   setIsOpen,
 }: {
-  bot?: CompleteBot;
+  bot: RouterOutputs["bots"]["getBotByIdWithCommands"]["bot"];
   setIsOpen: (isOpen: boolean) => void;
 }) => {
   const { toast } = useToast();
@@ -45,7 +44,7 @@ const BotForm = ({
   const editing = !!bot?.id;
 
   const router = useRouter();
-  const utils = trpc.useContext();
+  const utils = api.useContext();
 
   const form = useForm<z.infer<typeof insertBotParams>>({
     // latest Zod release has introduced a TS error with zodResolver
@@ -63,7 +62,7 @@ const BotForm = ({
 
   const onSuccess = (action: "create" | "update" | "delete") => {
     utils.bots.getBotsWithCommands.invalidate();
-    // router.refresh();
+
     setIsOpen(false);
     toast({
       title: "Success 👏",
@@ -76,7 +75,7 @@ const BotForm = ({
 
   const onError = (msg: string) => {
     utils.bots.getBotsWithCommands.invalidate();
-    // router.refresh();
+
     setIsOpen(true);
     toast({
       title: "Error",
@@ -86,19 +85,19 @@ const BotForm = ({
   };
 
   const { mutate: createBot, isLoading: isCreating } =
-    trpc.bots.createBot.useMutation({
+    api.bots.createBot.useMutation({
       onSuccess: () => onSuccess("create"),
       onError: (error) => onError(error.message),
     });
 
   const { mutate: updateBot, isLoading: isUpdating } =
-    trpc.bots.updateBot.useMutation({
+    api.bots.updateBot.useMutation({
       onSuccess: () => onSuccess("update"),
       onError: (error) => onError(error.message),
     });
 
   const { mutate: deleteBot, isLoading: isDeleting } =
-    trpc.bots.deleteBot.useMutation({
+    api.bots.deleteBot.useMutation({
       onSuccess: () => onSuccess("delete"),
       onError: (error) => onError(error.message),
     });
