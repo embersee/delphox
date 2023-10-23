@@ -98,28 +98,6 @@
       0 0,
       10px 10px;
   }
-
-  /* .bg-mask {
-    z-index: -100;
-
-    background-color: hsl(var(--background));
-    opacity: 1;
-    background-image: radial-gradient(
-        hsl(var(--mask-colour-two)) 2px,
-        transparent 2px
-      ),
-      radial-gradient(
-        hsl(var(--mask-colour-one)) 2px,
-        hsl(var(--background)) 2px
-      );
-    background-size: 20px 20px;
-    background-position: 0 0, 10px 10px;
-
-    animation-name: move-bg;
-    animation-duration: 150s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-  } */
 }
 
 @keyframes move-bg {

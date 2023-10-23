@@ -1,22 +1,20 @@
 "use client";
 
-import { CompleteBot, CompleteBotWithCommands } from "@/lib/db/schema/bot";
-import { trpc } from "@/lib/trpc/client";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "../ui/button";
 
 import Link from "next/link";
 
 import { ArrowUpRightIcon, ChevronRightSquare, Settings2 } from "lucide-react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { CompleteStore } from "@/lib/db/schema/store";
-import {
-  CompleteProduct,
-  PartialCompleteProduct,
-} from "@/lib/db/schema/product";
 
-export default function ProductList({ store }: { store: CompleteStore }) {
-  const { data: s } = trpc.stores.getStore.useQuery(undefined, {
+import { api } from "@/trpc/react";
+import { RouterOutputs } from "@/trpc/shared";
+import { NonNullableFields } from "@/server/types";
+
+export default function ProductList({
+  store,
+}: RouterOutputs["stores"]["getStore"]) {
+  const { data: s } = api.stores.getStore.useQuery(undefined, {
     initialData: { store },
     refetchOnMount: false,
   });
@@ -27,25 +25,16 @@ export default function ProductList({ store }: { store: CompleteStore }) {
 
   return (
     <ul ref={animationParent} className="space-y-2">
-      {s.store?.Products.map((p) => <Product product={p} key={p.id} />)}
+      {s.store?.Products.map((p) => <ProductCard product={p} key={p.id} />)}
     </ul>
   );
 }
 
-const Product = ({ product }: { product: CompleteProduct }) => {
-  // const { setBot, setIsOpen, openCommands } = useValeStore();
-
-  // const editBot = () => {
-  //   setBot(bot);
-  //   setIsOpen(true);
-  // };
-
-  // const editCommands = () => {
-  //   setBot(bot);
-  //   setIsOpen(true);
-  //   openCommands(true);
-  // };
-
+const ProductCard = ({
+  product,
+}: {
+  product: RouterOutputs["products"]["getProduct"]["product"][0];
+}) => {
   return (
     <li className="flex items-center justify-between rounded-md bg-secondary/30 p-2 pl-4 transition-colors hover:bg-secondary/60">
       <div className="flex w-full items-center justify-between space-x-4">

@@ -10,10 +10,12 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "../ui/button";
-import { CompleteBot } from "@/lib/db/schema/bot";
-import { trpc } from "@/lib/trpc/client";
+
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
+import { RouterOutputs } from "@/trpc/shared";
+import { api } from "@/trpc/react";
+import { NonNullableFields } from "@/server/types";
 
 const ActivateBotButton = ({
   children,
@@ -57,26 +59,26 @@ const ActivateBotButton = ({
   );
 };
 
-export const Activation = ({ bot }: { bot: CompleteBot }) => {
+export const Activation = ({
+  bot,
+}: NonNullableFields<RouterOutputs["bots"]["getBot"]>) => {
   const { toast } = useToast();
-  const router = useRouter();
-  const utils = trpc.useContext();
+
+  const utils = api.useContext();
 
   const onSuccess = (action: "activate" | "deactivate") => {
     utils.bots.getBots.invalidate();
-    // router.refresh();
+
     toast({
       title: "Success 👏",
       description: `Bot ${action}d!`,
       variant: "default",
     });
-
-    // router.push("/dash");
   };
 
   const onError = (msg: string) => {
     utils.bots.getBots.invalidate();
-    // router.refresh();
+
     toast({
       title: "Error",
       description: msg,
@@ -85,13 +87,13 @@ export const Activation = ({ bot }: { bot: CompleteBot }) => {
   };
 
   const { mutate: deactivateBot, isLoading: isUpdatingDeact } =
-    trpc.bots.updateBot.useMutation({
+    api.bots.updateBot.useMutation({
       onSuccess: () => onSuccess("deactivate"),
       onError: (error) => onError(error.message),
     });
 
   const { mutate: activateBot, isLoading: isUpdatingAct } =
-    trpc.bots.updateBot.useMutation({
+    api.bots.updateBot.useMutation({
       onSuccess: () => onSuccess("activate"),
       onError: (error) => onError(error.message),
     });

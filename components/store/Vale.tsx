@@ -8,7 +8,7 @@ import {
   ValeTitle,
 } from "@/components/ui/vale";
 import { create } from "zustand";
-import { BotId } from "@/lib/db/schema/bot";
+import { BotId } from "@/server/schema/bot";
 import StoreForm from "./StoreForm";
 
 type ValeStore = {

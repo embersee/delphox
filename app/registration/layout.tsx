@@ -1,5 +1,5 @@
 import DashNav from "@/components/layouts/DashNav";
-import { checkAuth } from "@/lib/auth/utils";
+import { checkAuth } from "@/server/auth";
 
 export default async function RegistrationLayout({
   children,

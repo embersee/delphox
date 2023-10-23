@@ -11,10 +11,12 @@ import { Slot } from "@radix-ui/react-slot";
 import { ButtonHTMLAttributes } from "react";
 import { create } from "zustand";
 import BotForm from "./BotForm";
-import { CompleteBotWithCommands } from "@/lib/db/schema/bot";
+
 import { Badge } from "../ui/badge";
 import Link from "next/link";
 import CommandForm from "./CommandForm";
+
+import { CompleteBotWithCommands } from "@/server/schema/bot";
 
 type ValeStore = {
   isOpen: boolean;
@@ -22,8 +24,8 @@ type ValeStore = {
   commands: boolean;
   openCommands: (commands: boolean) => void;
 
-  bot?: CompleteBotWithCommands;
-  setBot: (bot?: CompleteBotWithCommands) => void;
+  bot?: CompleteBotWithCommands["bot"];
+  setBot: (bot?: CompleteBotWithCommands["bot"]) => void;
 };
 
 export const useValeStore = create<ValeStore>()((set) => ({
@@ -101,7 +103,7 @@ export function CreateProjectVale() {
                 botId={bot?.id!}
               />
             ) : (
-              <BotForm setIsOpen={setIsOpen} bot={bot} />
+              <BotForm setIsOpen={setIsOpen} bot={bot!} />
             )}
           </div>
         </div>

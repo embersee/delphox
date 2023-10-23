@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { ThemeToggle } from "@/components/utils/ThemeToggle";
 
-import { getUserAuth } from "@/lib/auth/utils";
 import { Profile } from "../ui/profile";
 import { Button } from "../ui/button";
+import { getUserAuth } from "@/server/auth";
 
 export default async function DashNav() {
   const { session } = await getUserAuth();

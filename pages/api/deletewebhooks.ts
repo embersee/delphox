@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { env } from "@/lib/env.mjs";
-import { db } from "@/lib/db";
+import { env } from "@/env.mjs";
+import { db } from "@/server/db";
 import { Bot } from "grammy";
 
 export default async function handler(
