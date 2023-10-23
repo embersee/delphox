@@ -7,12 +7,9 @@ import Link from "next/link";
 import { ArrowUpRightIcon, ChevronRightSquare, Settings2 } from "lucide-react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
-import { Product } from "@/server/schema/product";
 import { api } from "@/trpc/react";
 import { RouterOutputs } from "@/trpc/shared";
 import { NonNullableFields } from "@/server/types";
-
-type fetchedProducts = RouterOutputs["products"]["getProduct"]["product"][0];
 
 export default function ProductList({
   store,
@@ -28,12 +25,16 @@ export default function ProductList({
 
   return (
     <ul ref={animationParent} className="space-y-2">
-      {s.store?.Products.map((p) => <Product product={p} key={p.id} />)}
+      {s.store?.Products.map((p) => <ProductCard product={p} key={p.id} />)}
     </ul>
   );
 }
 
-const Product = ({ product }: { product: fetchedProducts }) => {
+const ProductCard = ({
+  product,
+}: {
+  product: RouterOutputs["products"]["getProduct"]["product"][0];
+}) => {
   return (
     <li className="flex items-center justify-between rounded-md bg-secondary/30 p-2 pl-4 transition-colors hover:bg-secondary/60">
       <div className="flex w-full items-center justify-between space-x-4">
