@@ -10,27 +10,28 @@ import {
 import { create } from "zustand";
 
 import ProductForm from "./ProductForm";
-import { StoreId } from "@/server/schema/store";
+
+import { BotId } from "@/server/schema/bot";
 
 type ValeStore = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  storeId?: StoreId;
-  setStoreId: (storeId?: StoreId) => void;
+  botId?: BotId;
+  setBotId: (botId?: BotId) => void;
 };
 
 export const useProductStore = create<ValeStore>()((set) => ({
   isOpen: false,
   setIsOpen: (isOpen) => set({ isOpen }),
-  storeId: undefined,
-  setStoreId: (storeId?: StoreId) => set({ storeId }),
+  botId: undefined,
+  setBotId: (botId?: BotId) => set({ botId }),
 }));
 
 export function ProductVale() {
-  const { isOpen, setIsOpen, setStoreId, storeId } = useProductStore();
+  const { isOpen, setIsOpen, setBotId, botId } = useProductStore();
 
   const cleanUp = () => {
-    setStoreId(undefined);
+    setBotId(undefined);
   };
 
   return (
@@ -43,7 +44,7 @@ export function ProductVale() {
         <ValeIcon />
 
         <div className="h-[calc(100vh-7rem)] overflow-y-auto">
-          <div className=" mx-auto flex h-full max-w-2xl flex-col space-y-1 ">
+          <div className=" mx-auto flex h-full max-w-2xl flex-col space-y-1 p-2 ">
             <div className="py-8">
               <ValeTitle className="flex items-center justify-between gap-2 ">
                 Create Product
@@ -52,7 +53,7 @@ export function ProductVale() {
                 Description
               </ValeDescription>
             </div>
-            <ProductForm storeId={storeId!} setIsOpen={setIsOpen} />
+            <ProductForm botId={botId!} setIsOpen={setIsOpen} />
           </div>
         </div>
       </ValeContent>

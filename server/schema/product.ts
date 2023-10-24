@@ -30,7 +30,7 @@ export const insertProductSchema = productSchema
 
 export const insertProductParams = productSchema
   .extend({
-    storeId: z.string().cuid(),
+    botId: z.string().cuid(),
   })
   .omit({ id: true });
 

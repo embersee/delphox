@@ -12,7 +12,7 @@ export default function Heading({
   children,
 }: AppHeaderProps) {
   return (
-    <div className="py-10 flex flex-col place-content-between place-items-start space-y-3 sm:flex-row sm:space-y-0">
+    <div className="flex place-content-between place-items-start space-y-3 py-4 ">
       <div>
         <h1 className="text-2xl font-semibold">{title}</h1>
         <p className="text-muted-foreground">{description}</p>

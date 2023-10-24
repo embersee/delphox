@@ -30,13 +30,12 @@ import {
 import { PlusCircleIcon, X } from "lucide-react";
 import { RouterOutputs } from "@/trpc/shared";
 import { api } from "@/trpc/react";
-import { NonNullableFields } from "@/server/types";
 
 const BotForm = ({
   bot,
   setIsOpen,
 }: {
-  bot: RouterOutputs["bots"]["getBotByIdWithCommands"]["bot"];
+  bot: RouterOutputs["bots"]["getBot"]["bot"];
   setIsOpen: (isOpen: boolean) => void;
 }) => {
   const { toast } = useToast();

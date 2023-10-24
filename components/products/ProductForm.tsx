@@ -20,22 +20,16 @@ import { useToast } from "@/components/ui/use-toast";
 
 import { PlusCircleIcon, X } from "lucide-react";
 
-import {
-  NewProduct,
-  NewProductParams,
-  insertProductParams,
-  insertProductSchema,
-} from "@/server/schema/product";
-import { StoreId } from "@/server/schema/store";
-import { insertImageParams } from "@/server/schema/image";
-import { NewCategory, insertCategoryParams } from "@/server/schema/category";
+import { NewProductParams, insertProductParams } from "@/server/schema/product";
+
 import { api } from "@/trpc/react";
+import { BotId } from "@/server/schema/bot";
 
 const ProductForm = ({
-  storeId,
+  botId,
   setIsOpen,
 }: {
-  storeId: StoreId;
+  botId: BotId;
   setIsOpen: (isOpen: boolean) => void;
 }) => {
   const { toast } = useToast();
@@ -51,7 +45,7 @@ const ProductForm = ({
       name: "",
       description: "",
       status: "INACTIVE",
-      storeId: storeId,
+      botId: botId,
       shortDescription: "",
       price: 0,
       stock: 100,
@@ -61,18 +55,19 @@ const ProductForm = ({
   });
 
   const onSuccess = (action: "create" | "update" | "delete") => {
-    utils.stores.getStore.invalidate();
+    utils.bots.getBotById.invalidate();
     // router.refresh();
     setIsOpen(false);
     toast({
       title: "Success 👏",
-      description: `Store ${action}d!`,
+      description: `Product ${action}d!`,
       variant: "default",
     });
   };
 
   const onError = (msg: string) => {
-    utils.stores.getStore.invalidate();
+    utils.bots.getBotById.invalidate();
+
     // router.refresh();
     setIsOpen(true);
     toast({
@@ -266,7 +261,7 @@ const ProductForm = ({
             name="priority"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Status</FormLabel>
+                <FormLabel>Priority</FormLabel>
                 <FormControl>
                   <Input
                     {...field}

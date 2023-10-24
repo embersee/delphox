@@ -15,11 +15,12 @@ export const productRouter = createTRPCRouter({
   getProduct: protectedProcedure.query(async ({ ctx: { session } }) => {
     const p = await db.product.findMany({
       where: {
-        Store: {
-          Bot: {
-            userId: session?.user.id,
-          },
+        Bot: {
+          userId: session?.user.id,
         },
+      },
+      include: {
+        Categories: true,
       },
     });
 

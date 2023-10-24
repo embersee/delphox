@@ -4,22 +4,17 @@ import { PlusCircleIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useProductStore } from "./Vale";
 
-export default function CreateProductButton({ storeId }: { storeId: string }) {
-  const { setIsOpen, setStoreId } = useProductStore();
+export default function CreateProductButton({ botId }: { botId: string }) {
+  const { setIsOpen, setBotId } = useProductStore();
 
   const handleClick = () => {
-    setStoreId(storeId);
+    setBotId(botId);
     setIsOpen(true);
   };
 
   return (
-    <Button
-      variant="highlight"
-      size="lg"
-      className="mt-6"
-      onClick={() => handleClick()}
-    >
-      <PlusCircleIcon className="mr-1  h-4" />
+    <Button variant="highlight" size="lg" onClick={() => handleClick()}>
+      <PlusCircleIcon className="mr-1 h-4" />
       <span>Create Product</span>
     </Button>
   );

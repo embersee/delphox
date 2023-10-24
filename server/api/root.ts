@@ -7,13 +7,11 @@ import { customerRouter } from "./routers/customers";
 import { imageRouter } from "./routers/images";
 import { orderRouter } from "./routers/orders";
 import { productRouter } from "./routers/products";
-import { storeRouter } from "./routers/stores";
 import { helloRouter } from "./routers/hello";
 
 export const appRouter = createTRPCRouter({
   bots: botsRouter,
   commands: commandsRouter,
-  stores: storeRouter,
   products: productRouter,
   categories: categoryRouter,
   images: imageRouter,

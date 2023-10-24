@@ -2,13 +2,16 @@ import CreateProductButton from "@/components/products/CreateProductButton";
 import { ProductVale } from "@/components/products/Vale";
 
 import CreateStoreButton from "@/components/store/CreateStoreButton";
-import ProductList from "@/components/store/ProductList";
+import ProductList from "@/components/products/ProductList";
 import { StoreVale } from "@/components/store/Vale";
 
 import Heading from "@/components/ui/heading";
 import { api } from "@/trpc/server";
 
 import { redirect } from "next/navigation";
+import { Badge } from "@/components/ui/badge";
+import BackButton from "@/components/layouts/BackButton";
+import ActivityBadge from "@/components/ui/activity-badge";
 
 export default async function BotPage({
   params: { id },
@@ -21,28 +24,16 @@ export default async function BotPage({
 
   return (
     <>
-      {!bot.Store ? (
-        <div className="text-center">
-          <h2 className="mt-2 text-sm font-semibold">No store is connected</h2>
-          <p className="mt-1 text-sm text-gray-500">
-            Get started by creating a new store!
-          </p>
-          <CreateStoreButton botId={bot.id} />
-        </div>
-      ) : (
-        <>
-          <Heading
-            title="My Store"
-            description="Create or manage products here."
-          >
-            <CreateProductButton storeId={bot.Store.id} />
-          </Heading>
+      <BackButton />
+      <Heading
+        title={bot.displayName}
+        description={bot.description || "no description."}
+      >
+        <ActivityBadge active={bot.active} />
+      </Heading>
 
-          <ProductList store={bot.Store} />
-        </>
-      )}
+      <ProductList bot={bot} />
 
-      <StoreVale />
       <ProductVale />
     </>
   );

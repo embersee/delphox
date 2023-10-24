@@ -13,9 +13,7 @@ export default async function Dash() {
       <Heading
         title="My Bots"
         description="Create or select which bot to manage here."
-      >
-        {bots.length ? <CreateBotButton /> : null}
-      </Heading>
+      ></Heading>
 
       <BotList bots={bots} />
 

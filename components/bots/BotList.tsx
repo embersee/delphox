@@ -10,8 +10,9 @@ import { ArrowUpRightIcon, ChevronRightSquare, Settings2 } from "lucide-react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { api } from "@/trpc/react";
 import { RouterOutputs } from "@/trpc/shared";
-import { NonNullableFields } from "@/server/types";
+
 import { CompleteBotWithCommands } from "@/server/schema/bot";
+import ActivityBadge from "../ui/activity-badge";
 
 export default function BotList({
   bots,
@@ -58,15 +59,7 @@ const Bot = ({ bot }: CompleteBotWithCommands) => {
         </Link>
 
         <div className="flex items-center space-x-4 self-end">
-          {bot.active ? (
-            <Badge variant="outline" className=" border-green-300">
-              Active
-            </Badge>
-          ) : (
-            <Badge variant="outline" className=" border-orange-300">
-              Inactive
-            </Badge>
-          )}
+          <ActivityBadge active={bot.active} />
 
           <Button
             variant="ghost"
@@ -75,7 +68,7 @@ const Bot = ({ bot }: CompleteBotWithCommands) => {
           >
             <ChevronRightSquare className=" h-4 w-4" />
             <span>Commands</span>
-            <span>{bot.Command.length > 0 && bot.Command.length}</span>
+            {/* <span>{bot.Command.length > 0 && bot.Command.length}</span> */}
           </Button>
           <Button
             variant="ghost"

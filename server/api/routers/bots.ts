@@ -65,9 +65,9 @@ export const botsRouter = createTRPCRouter({
           userId: session.user.id,
         },
         include: {
-          Store: {
+          Products: {
             include: {
-              Products: true,
+              Categories: true,
             },
           },
         },

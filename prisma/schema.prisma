@@ -23,7 +23,7 @@ model User {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  bot Bot[]
+  Bot Bot[]
 }
 
 model Bot {
@@ -40,11 +40,12 @@ model Bot {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  User     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Command  Command[]
-  Store    Store?
+  User    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Command Command[]
+
   Customer Customer[]
   Order    Order[]
+  Products Product[]
 
   @@index([userId])
 }
@@ -58,22 +59,6 @@ model Command {
   botId String
 
   @@index([botId])
-}
-
-model Store {
-  id          String  @id @default(cuid())
-  name        String
-  description String?
-
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-
-  Bot   Bot    @relation(fields: [botId], references: [id], onDelete: Cascade)
-  botId String @unique
-
-  Cart       Cart[]
-  Categories Category[]
-  Products   Product[]
 }
 
 model Product {
@@ -90,14 +75,15 @@ model Product {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  Store   Store?  @relation(fields: [storeId], references: [id])
-  storeId String?
-
   Categories Category[]
   Images     Image[]
-  InCart     Cart[]
+  Bot        Bot?       @relation(fields: [botId], references: [id])
+  botId      String?
+  Cart       Cart?      @relation(fields: [cartId], references: [id])
+  cartId     String?
 
-  @@index([storeId])
+  @@index([botId])
+  @@index([cartId])
 }
 
 enum ProductStatus {
@@ -112,11 +98,8 @@ model Category {
 
   Product   Product? @relation(fields: [productId], references: [id])
   productId String?
-  Store     Store?   @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  storeId   String?
 
   @@index([productId])
-  @@index([storeId])
 }
 
 model Image {
@@ -142,15 +125,11 @@ model Cart {
   Customer           Customer @relation(fields: [customerTelegramId], references: [telegramId])
   customerTelegramId String   @unique
 
-  StoreCart Store  @relation(fields: [storeId], references: [id])
-  storeId   String
-
   ProductsInCart Product[]
 
   OrderCart Order?
 
   @@index([customerTelegramId])
-  @@index([storeId])
 }
 
 model Customer {
