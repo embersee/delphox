@@ -53,7 +53,7 @@ const ProductCard = ({
   product,
   categories,
 }: {
-  product: RouterOutputs["products"]["getProduct"]["product"][0];
+  product: RouterOutputs["products"]["getProducts"]["product"][0];
   categories: RouterOutputs["categories"]["getCategoryByBot"]["category"];
 }) => {
   return (

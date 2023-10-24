@@ -6,6 +6,9 @@ import {
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { db } from "@/server/db";
+import { Bot } from "grammy";
+import { z } from "zod";
+import { env } from "@/env.mjs";
 
 export const botsRouter = createTRPCRouter({
   /*
@@ -58,11 +61,10 @@ export const botsRouter = createTRPCRouter({
 
   getBotById: protectedProcedure
     .input(botIdSchema)
-    .query(async ({ input: { id }, ctx: { session } }) => {
+    .query(async ({ input: { id } }) => {
       const b = await db.bot.findFirst({
         where: {
           id: id,
-          userId: session.user.id,
         },
         include: {
           Products: {
@@ -86,6 +88,25 @@ export const botsRouter = createTRPCRouter({
         },
         include: {
           Command: true,
+        },
+      });
+
+      return { bot: b };
+    }),
+
+  getBotPublic: publicProcedure
+    .input(botIdSchema)
+    .query(async ({ input: { id } }) => {
+      const b = await db.bot.findFirst({
+        where: {
+          id: id,
+        },
+        include: {
+          Products: {
+            include: {
+              Categories: true,
+            },
+          },
         },
       });
 
@@ -131,5 +152,37 @@ export const botsRouter = createTRPCRouter({
       });
 
       return { success: true };
+    }),
+
+  activateBot: protectedProcedure
+    .input(z.object({ id: z.string(), active: z.boolean() }))
+    .mutation(async ({ input: { id, active } }) => {
+      const update = await db.bot.update({
+        data: { active },
+        where: {
+          id: id,
+        },
+      });
+
+      const b = new Bot(update.botToken);
+
+      const menuURLSet = await b.api.raw.setChatMenuButton(
+        active
+          ? {
+              menu_button: {
+                type: "web_app",
+                text: update.menuButton || "Menu",
+                web_app: { url: env.NEXTAUTH_URL + "/app/" + id },
+              },
+            }
+          : {
+              menu_button: {
+                type: "default",
+              },
+            },
+      );
+
+      if (menuURLSet) return { success: true };
+      return { success: false };
     }),
 });

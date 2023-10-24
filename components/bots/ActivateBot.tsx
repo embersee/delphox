@@ -94,13 +94,13 @@ export const Activation = ({
   };
 
   const { mutate: deactivateBot, isLoading: isUpdatingDeact } =
-    api.bots.updateBot.useMutation({
+    api.bots.activateBot.useMutation({
       onSuccess: () => onSuccess("deactivate"),
       onError: (error) => onError(error.message),
     });
 
   const { mutate: activateBot, isLoading: isUpdatingAct } =
-    api.bots.updateBot.useMutation({
+    api.bots.activateBot.useMutation({
       onSuccess: () => onSuccess("activate"),
       onError: (error) => onError(error.message),
     });
@@ -111,7 +111,7 @@ export const Activation = ({
         <ActivateBotButton
           variant="outline"
           className="border-green-300 backdrop-blur-[1px]"
-          onClickAction={() => deactivateBot({ ...bot, active: false })}
+          onClickAction={() => deactivateBot({ id: bot.id, active: false })}
           desc="This action turns your bot off. Your clients won't be able to see your store/catalog."
           activate={false}
         >
@@ -121,7 +121,7 @@ export const Activation = ({
         <ActivateBotButton
           variant="outline"
           className="border-orange-300 backdrop-blur-[1px]"
-          onClickAction={() => activateBot({ ...bot, active: true })}
+          onClickAction={() => activateBot({ id: bot.id, active: true })}
           desc="This action will turn your bot on. Your clients will be able to view your store."
           activate={true}
         >

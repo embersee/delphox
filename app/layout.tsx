@@ -24,6 +24,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script src="https://telegram.org/js/telegram-web-app.js" defer />
+      </head>
       <body className={inter.className}>
         <TRPCReactProvider headers={headers()}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
