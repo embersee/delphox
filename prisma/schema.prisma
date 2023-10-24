@@ -43,9 +43,10 @@ model Bot {
   User    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   Command Command[]
 
-  Customer Customer[]
-  Order    Order[]
-  Products Product[]
+  Customer   Customer[]
+  Order      Order[]
+  Products   Product[]
+  Categories Category[]
 
   @@index([userId])
 }
@@ -98,8 +99,11 @@ model Category {
 
   Product   Product? @relation(fields: [productId], references: [id])
   productId String?
+  Bot       Bot?     @relation(fields: [botId], references: [id])
+  botId     String?
 
   @@index([productId])
+  @@index([botId])
 }
 
 model Image {

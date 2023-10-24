@@ -3,7 +3,7 @@ import {
   insertCategoryParams,
   updateCategoryParams,
 } from "@/server/schema/category";
-import { protectedProcedure, publicProcedure, createTRPCRouter } from "../trpc";
+import { protectedProcedure, createTRPCRouter } from "../trpc";
 import { db } from "@/server/db";
 
 export const categoryRouter = createTRPCRouter({
@@ -13,10 +13,8 @@ export const categoryRouter = createTRPCRouter({
   getCategoryByBot: protectedProcedure.query(async ({ ctx: { session } }) => {
     const c = await db.category.findMany({
       where: {
-        Store: {
-          Bot: {
-            userId: session?.user.id,
-          },
+        Bot: {
+          userId: session?.user.id,
         },
       },
     });

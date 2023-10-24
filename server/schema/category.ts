@@ -4,7 +4,7 @@ export const categorySchema = z.object({
   id: z.string(),
   name: z.string(),
   productId: z.string().optional(),
-  storeId: z.string().optional(),
+  botId: z.string().optional(),
 });
 
 export const insertCategorySchema = categorySchema
@@ -24,7 +24,7 @@ export const insertCategoryParams = categorySchema
 export const updateCategorySchema = categorySchema.extend({
   id: z.string().cuid(),
   // productId: z.string(),
-  storeId: z.string(),
+  botId: z.string(),
 });
 
 export const updateCategoryParams = updateCategorySchema.extend({});
