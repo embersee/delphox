@@ -17,6 +17,7 @@ import Link from "next/link";
 import CommandForm from "./CommandForm";
 
 import { CompleteBotWithCommands } from "@/server/schema/bot";
+import ActivityBadge from "../ui/activity-badge";
 
 type ValeStore = {
   isOpen: boolean;
@@ -65,19 +66,7 @@ export function CreateProjectVale() {
             <div className="py-8">
               <ValeTitle className="flex items-center justify-between gap-2 ">
                 {editing ? "Edit" : "Create"} {commands ? "Commands" : "Bot"}
-                <div>
-                  {bot ? (
-                    bot?.active ? (
-                      <Badge variant="outline" className=" border-green-300">
-                        Active
-                      </Badge>
-                    ) : (
-                      <Badge variant="outline" className=" border-orange-300">
-                        Inactive
-                      </Badge>
-                    )
-                  ) : null}
-                </div>
+                <div>{bot ? <ActivityBadge active={bot.active} /> : null}</div>
               </ValeTitle>
               <ValeDescription className="text-muted-foreground">
                 {commands ? (
