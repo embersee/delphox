@@ -1,3 +1,5 @@
+"use client";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,16 +14,18 @@ import {
 import { Button } from "../ui/button";
 
 import { useToast } from "../ui/use-toast";
-import { useRouter } from "next/navigation";
 import { RouterOutputs } from "@/trpc/shared";
 import { api } from "@/trpc/react";
 import { NonNullableFields } from "@/server/types";
+import { useRouter } from "next/navigation";
 
 const ActivateBotButton = ({
   children,
   onClickAction,
   desc,
   variant,
+  className,
+  activate,
 }: {
   children: string | string[];
   onClickAction: () => void;
@@ -33,11 +37,13 @@ const ActivateBotButton = ({
     | "outline"
     | "secondary"
     | "ghost";
+  className?: string;
+  activate: boolean;
 }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button type="button" variant={variant}>
+        <Button type="button" variant={variant} className={className}>
           {children}
         </Button>
       </AlertDialogTrigger>
@@ -49,8 +55,8 @@ const ActivateBotButton = ({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button variant={variant} onClick={onClickAction}>
-              {children}
+            <Button onClick={onClickAction}>
+              {activate ? "Activate Bot" : "Deactivate Bot"}
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>
@@ -63,12 +69,13 @@ export const Activation = ({
   bot,
 }: NonNullableFields<RouterOutputs["bots"]["getBot"]>) => {
   const { toast } = useToast();
+  const router = useRouter();
 
   const utils = api.useContext();
 
   const onSuccess = (action: "activate" | "deactivate") => {
-    utils.bots.getBots.invalidate();
-
+    utils.bots.getBotById.invalidate();
+    router.refresh();
     toast({
       title: "Success 👏",
       description: `Bot ${action}d!`,
@@ -77,8 +84,8 @@ export const Activation = ({
   };
 
   const onError = (msg: string) => {
-    utils.bots.getBots.invalidate();
-
+    utils.bots.getBotById.invalidate();
+    router.refresh();
     toast({
       title: "Error",
       description: msg,
@@ -102,18 +109,23 @@ export const Activation = ({
     <div>
       {bot.active ? (
         <ActivateBotButton
-          variant="destructive"
+          variant="outline"
+          className="border-green-300 backdrop-blur-[1px]"
           onClickAction={() => deactivateBot({ ...bot, active: false })}
           desc="This action turns your bot off. Your clients won't be able to see your store/catalog."
+          activate={false}
         >
-          {`Deactivat${isUpdatingDeact ? "ing..." : "e"}`}
+          {isUpdatingDeact ? "Deactivating..." : "Active"}
         </ActivateBotButton>
       ) : (
         <ActivateBotButton
+          variant="outline"
+          className="border-orange-300 backdrop-blur-[1px]"
           onClickAction={() => activateBot({ ...bot, active: true })}
           desc="This action will turn your bot on. Your clients will be able to view your store."
+          activate={true}
         >
-          {`Activat${isUpdatingAct ? "ing..." : "e"}`}
+          {isUpdatingAct ? "Activating..." : "Deactivated"}
         </ActivateBotButton>
       )}
     </div>

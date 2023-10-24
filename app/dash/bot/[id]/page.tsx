@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 
 import BackButton from "@/components/layouts/BackButton";
 import ActivityBadge from "@/components/ui/activity-badge";
+import { Activation } from "@/components/bots/ActivateBot";
 
 export default async function BotPage({
   params: { id },
@@ -24,7 +25,7 @@ export default async function BotPage({
         title={bot.displayName}
         description={bot.description || "no description."}
       >
-        <ActivityBadge active={bot.active} />
+        <ActivityBadge active={bot.active} /> <Activation bot={bot} />
       </Heading>
 
       <ProductList bot={bot} />
