@@ -136,3 +136,7 @@ h1 {
 h2 {
   @apply text-lg;
 }
+
+.card-theme {
+  @apply rounded-lg border bg-background/30 backdrop-blur-[1px];
+}

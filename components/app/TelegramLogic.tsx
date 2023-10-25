@@ -7,6 +7,7 @@ export default function TelegramLogic() {
 
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
+    Telegram.WebApp.enableClosingConfirmation();
   }, []);
   return <></>;
 }

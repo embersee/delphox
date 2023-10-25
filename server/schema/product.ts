@@ -2,7 +2,6 @@ import { z } from "zod";
 import { insertImageParams } from "./image";
 import { insertCategoryParams } from "./category";
 import { RouterOutputs } from "@/trpc/shared";
-import { NonNullableFields } from "../types";
 
 export const productSchema = z.object({
   id: z.string(),
@@ -56,3 +55,9 @@ export const createProductSchema = z.object({
 });
 
 export type CreateNewProduct = z.infer<typeof createProductSchema>;
+
+type storeProduct = RouterOutputs["products"]["getProducts"]["product"][0];
+
+export interface StoreProduct extends storeProduct {
+  quantity?: number;
+}
