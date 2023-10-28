@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/server/utils";
+import { cn } from "@/components/utils/classnames";
 import React from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
 
